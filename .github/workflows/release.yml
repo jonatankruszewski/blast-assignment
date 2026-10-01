@@ -1,0 +1,36 @@
+name: Release
+
+# Runs only after CI has gone green on main, so nothing publishes that a pull
+# request would have been blocked on. changesets/action opens a
+# `chore: version packages` pull request and publishes only once that pull
+# request is merged — a bad bump is visible before it is on npm, immutably.
+#
+# Publishing is opt-in: set the repository variable RELEASE_ENABLED to `true`
+# once npm trusted publishing is configured (see the README). Until then, and
+# always on the template repository itself, the job is skipped.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency: release-${{ github.ref }}
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    # workflow_run fires on failure as well, so the conclusion is checked.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    permissions:
+      contents: write # version commit and tags
+      pull-requests: write # the version pull request
+      id-token: write # npm trusted publishing (OIDC), with provenance
+    uses: rxova/shared/.github/workflows/changesets-release.yml@main
+    with:
+      enabled: ${{ vars.RELEASE_ENABLED == 'true' }}

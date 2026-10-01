@@ -1,0 +1,3 @@
+{
+  "extends": "@rxova/repo-config/tsconfig.base.json"
+}

@@ -1,0 +1,92 @@
+name: CI
+
+# Every job is a reusable workflow from rxova/shared, called at @main. What
+# stays here is the graph: which jobs run, and when.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    # No `edited`: the title check lives in pr-title.yml. `labeled`/`unlabeled`
+    # re-run the changeset gate, whose escape hatch is a label.
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+# Superseded pull request runs are cancelled; main runs always finish.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  commitlint:
+    name: commit messages
+    uses: rxova/shared/.github/workflows/commit-messages.yml@main
+
+  checks:
+    name: lint · format · types · build
+    needs: [commitlint]
+    if: needs.commitlint.outputs.code-changed == 'true'
+    uses: rxova/shared/.github/workflows/repo-checks.yml@main
+
+  test:
+    name: unit
+    needs: [commitlint]
+    if: needs.commitlint.outputs.code-changed == 'true'
+    uses: rxova/shared/.github/workflows/unit-tests.yml@main
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  supply-chain:
+    name: audit · sherif · knip · dedupe
+    needs: [commitlint]
+    if: needs.commitlint.outputs.code-changed == 'true'
+    uses: rxova/shared/.github/workflows/supply-chain.yml@main
+
+  pack-smoke:
+    name: package contract
+    needs: [commitlint]
+    if: needs.commitlint.outputs.code-changed == 'true'
+    uses: rxova/shared/.github/workflows/package-contract.yml@main
+
+  compat:
+    name: packages on their oldest node
+    needs: [commitlint]
+    if: needs.commitlint.outputs.code-changed == 'true'
+    uses: rxova/shared/.github/workflows/node-floor-smoke.yml@main
+
+  docs:
+    name: docs build
+    needs: [commitlint]
+    if: >-
+      needs.commitlint.outputs.code-changed == 'true' ||
+      needs.commitlint.outputs.docs-changed == 'true'
+    uses: rxova/shared/.github/workflows/docs-build.yml@main
+
+  docs-checks:
+    name: docs checks
+    needs: [commitlint]
+    if: needs.commitlint.outputs.docs-only == 'true'
+    uses: rxova/shared/.github/workflows/docs-checks.yml@main
+    with:
+      command: pnpm run prettier:check
+
+  changeset:
+    name: changeset present
+    needs: [commitlint]
+    uses: rxova/shared/.github/workflows/changeset-gate.yml@main
+
+  # The one context branch protection requires. `skipped` passes; `failure`
+  # and `cancelled` do not.
+  gate:
+    name: all checks
+    if: always()
+    needs:
+      [commitlint, checks, test, supply-chain, pack-smoke, compat, docs, docs-checks, changeset]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: rxova/shared/actions/require-jobs@main
+        with:
+          needs: ${{ toJSON(needs) }}
