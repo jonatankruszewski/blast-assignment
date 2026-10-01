@@ -1,0 +1,21 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 var(--blast-space-2);
+  border: 1px solid var(--tone-border);
+  border-radius: var(--blast-radius-full);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  font-size: var(--blast-font-size-2xs);
+  font-weight: var(--blast-font-weight-semibold);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tag[data-tone="neutral"] {
+  border-color: var(--blast-color-border);
+  background: var(--blast-gray-100);
+  color: var(--blast-gray-700);
+}

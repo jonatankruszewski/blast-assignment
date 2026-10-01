@@ -1,0 +1,25 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--blast-color-bg);
+}
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--blast-z-nav);
+  flex: none;
+}
+.main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--blast-space-6);
+}
+@media (max-width: 719px) {
+  .main {
+    padding: var(--blast-space-4);
+  }
+}

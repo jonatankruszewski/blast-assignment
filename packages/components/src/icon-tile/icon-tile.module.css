@@ -1,0 +1,39 @@
+.tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+}
+.solid {
+  background: var(--tone-solid);
+  color: var(--tone-on-solid);
+}
+.sm {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--blast-radius-xs);
+}
+.sm svg {
+  width: 14px;
+  height: 14px;
+}
+.md {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--blast-radius-sm);
+}
+.md svg {
+  width: 18px;
+  height: 18px;
+}
+.lg {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--blast-radius-md);
+}
+.lg svg {
+  width: 24px;
+  height: 24px;
+}

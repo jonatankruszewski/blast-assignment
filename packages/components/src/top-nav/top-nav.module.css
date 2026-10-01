@@ -1,0 +1,25 @@
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--blast-space-6);
+  height: var(--blast-topnav-height);
+  padding: 0 var(--blast-space-6);
+  background: var(--blast-nav-bg);
+  color: var(--blast-nav-fg);
+}
+.project {
+  flex: 0 1 288px;
+  min-width: 0;
+}
+.end {
+  display: flex;
+  align-items: center;
+  gap: var(--blast-space-3);
+  margin-left: auto;
+}
+@media (max-width: 719px) {
+  .nav {
+    gap: var(--blast-space-3);
+    padding: 0 var(--blast-space-4);
+  }
+}

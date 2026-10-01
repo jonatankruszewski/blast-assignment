@@ -33,7 +33,14 @@ export interface NodeLayoutHints {
   /** Position inside its column, top to bottom. */
   order?: number;
   /** Satellite placement relative to another node instead of a column slot. */
-  attach?: { to: NodeId; side: Side; gap?: number; align?: "start" | "center" | "end" };
+  attach?: {
+    to: NodeId;
+    side: Side;
+    gap?: number;
+    align?: "start" | "center" | "end";
+    /** Extra shift along the anchor side (px) after alignment, e.g. to sit above-left. */
+    offset?: number;
+  };
   /** Fixed position; wins over everything else. */
   position?: Point;
 }
@@ -72,6 +79,8 @@ export interface Decoration {
   id: string;
   anchor: Anchor;
   content: ReactNode;
+  /** Pin to this port of the node instead of `anchor` (falls back to `anchor` if unknown). */
+  port?: string;
 }
 
 export interface NodeRenderProps<N extends GraphNode = GraphNode> {
@@ -94,6 +103,10 @@ export interface RoutedEdge<E extends GraphEdge = GraphEdge> {
 
 export interface EdgeRenderProps<E extends GraphEdge = GraphEdge> extends RoutedEdge<E> {
   selected: boolean;
+  /** `url(#…)` of the library's marker for `edge.markerStart`, if any. */
+  markerStart?: string;
+  /** `url(#…)` of the library's marker for `edge.markerEnd`, if any. */
+  markerEnd?: string;
 }
 
 export interface MeasuredNode<N extends GraphNode = GraphNode> {
@@ -142,6 +155,8 @@ export interface DependencyGraphProps<
   onSelect?: (id: NodeId | null) => void;
   onNodeActivate?: (node: N) => void;
   ariaLabel: string;
+  /** Accessible name for a node (defaults to its rendered text content). */
+  getNodeLabel?: (node: N) => string | undefined;
   emptyState?: ReactNode;
   className?: string;
   style?: React.CSSProperties;

@@ -1,0 +1,62 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blast-space-8);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--blast-space-6);
+}
+.title {
+  margin: 0;
+  font-size: var(--blast-font-size-xl);
+}
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blast-space-3);
+}
+.blockTitle {
+  margin: 0;
+  padding-bottom: var(--blast-space-2);
+  border-bottom: 1px solid var(--blast-color-border);
+  color: var(--blast-color-text-secondary);
+  font-size: var(--blast-font-size-sm);
+  font-weight: var(--blast-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--blast-space-3);
+}
+.canvas {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  border: 1px dashed var(--blast-color-border);
+  border-radius: var(--blast-radius-md);
+}
+.canvasContent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--blast-space-6);
+}
+.canvasLayer {
+  position: absolute;
+  inset: 0;
+}
+.navFrame {
+  overflow: visible;
+  border-radius: var(--blast-radius-md);
+}
+.aside {
+  width: 240px;
+}
+.svg {
+  overflow: visible;
+}

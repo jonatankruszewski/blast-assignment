@@ -1,0 +1,57 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--blast-control-height-sm);
+  height: var(--blast-control-height-sm);
+  padding: 0;
+  border: 0;
+  border-radius: var(--blast-radius-sm);
+  background: transparent;
+  color: var(--blast-color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--blast-duration-fast) var(--blast-easing),
+    color var(--blast-duration-fast) var(--blast-easing);
+}
+.button svg {
+  width: 20px;
+  height: 20px;
+}
+.button:hover:not(:disabled) {
+  background: var(--blast-gray-100);
+  color: var(--blast-color-text);
+}
+.button:focus-visible {
+  outline: 2px solid var(--blast-color-focus);
+  outline-offset: 2px;
+}
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.sm {
+  width: 24px;
+  height: 24px;
+}
+.sm svg {
+  width: 16px;
+  height: 16px;
+}
+.onDark {
+  color: var(--blast-nav-fg);
+}
+.onDark:hover:not(:disabled) {
+  background: rgb(255 255 255 / 10%);
+  color: var(--blast-white);
+}
+@media (pointer: coarse) {
+  .button {
+    min-width: var(--blast-tap-target);
+    min-height: var(--blast-tap-target);
+  }
+}
+.glyph {
+  display: contents;
+}

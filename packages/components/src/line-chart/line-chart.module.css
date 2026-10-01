@@ -1,0 +1,67 @@
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blast-space-3);
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+.plot {
+  width: 100%;
+  min-width: 0;
+}
+.plot :global(.recharts-cartesian-axis-tick-value) {
+  fill: var(--blast-color-text-secondary);
+  font-family: var(--blast-font-family);
+  font-size: var(--blast-font-size-2xs);
+}
+.plot :global(.recharts-cartesian-grid-vertical line) {
+  stroke: var(--blast-gray-200);
+}
+.plot :global(.recharts-surface:focus) {
+  outline: none;
+}
+.plot :global(.recharts-wrapper:focus-visible) {
+  outline: 2px solid var(--blast-color-focus);
+  outline-offset: 2px;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--blast-space-1) var(--blast-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--blast-color-text);
+  font-size: var(--blast-font-size-sm);
+}
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--blast-radius-full);
+  background: var(--tone-chart);
+}
+.tooltip {
+  padding: var(--blast-space-2) var(--blast-space-3);
+  border: 1px solid var(--blast-color-border);
+  border-radius: var(--blast-radius-sm);
+  background: var(--blast-color-surface);
+  box-shadow: var(--blast-shadow-md);
+  font-size: var(--blast-font-size-xs);
+}
+.tooltipTitle {
+  margin: 0 0 var(--blast-space-1);
+  font-weight: var(--blast-font-weight-semibold);
+}
+.tooltipRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}

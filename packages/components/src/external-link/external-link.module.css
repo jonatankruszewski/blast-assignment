@@ -1,0 +1,25 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--blast-space-2);
+  border-radius: var(--blast-radius-xs);
+  color: var(--blast-color-text);
+  font-weight: var(--blast-font-weight-semibold);
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.link:focus-visible {
+  outline: 2px solid var(--blast-color-focus);
+  outline-offset: 2px;
+}
+.icon {
+  display: inline-flex;
+  flex: none;
+}
+.icon svg {
+  width: 18px;
+  height: 18px;
+}

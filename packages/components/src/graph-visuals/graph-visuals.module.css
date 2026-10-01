@@ -1,0 +1,232 @@
+/* All graph visuals size to content: no margins, no positioning. */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--blast-pill-height);
+  padding: 0 var(--blast-space-3) 0 10px;
+  border: 1px solid var(--tone-border);
+  border-radius: var(--blast-radius-md);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  font-size: var(--blast-font-size-base);
+  font-weight: var(--blast-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    box-shadow var(--blast-duration-fast) var(--blast-easing),
+    background-color var(--blast-duration-fast) var(--blast-easing);
+}
+.pill .glyph svg {
+  width: 16px;
+  height: 16px;
+}
+.glyph {
+  display: inline-flex;
+  flex: none;
+}
+.outline {
+  background: var(--blast-white);
+}
+.outline[data-tone="neutral"] {
+  color: var(--blast-color-text);
+}
+.outline[data-tone="red"] {
+  background: var(--blast-red-bg);
+  color: var(--blast-gray-900);
+}
+.outline[data-tone="red"] .glyph {
+  color: var(--blast-red-fg);
+}
+.solid {
+  border-color: transparent;
+  background: var(--tone-solid);
+  color: var(--tone-on-solid);
+}
+.sm {
+  height: 24px;
+  padding: 0 var(--blast-space-2);
+  border-radius: var(--blast-radius-sm);
+  font-size: var(--blast-font-size-sm);
+}
+.sm .glyph svg {
+  width: 14px;
+  height: 14px;
+}
+.interactive {
+  cursor: pointer;
+}
+.interactive:hover {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tone-border) 45%, transparent);
+}
+.selected {
+  box-shadow:
+    0 0 0 2px var(--blast-white),
+    0 0 0 4px var(--tone-fg);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 var(--blast-space-2) 0 10px;
+  border: 1px solid var(--tone-border);
+  border-radius: var(--blast-radius-sm);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  font-size: var(--blast-font-size-base);
+  font-weight: var(--blast-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+.chip[data-tone="lime"],
+.chip[data-tone="sky"] {
+  color: var(--blast-gray-900);
+}
+.chip .glyph svg {
+  width: 16px;
+  height: 16px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--blast-space-4);
+  border: 1px solid var(--blast-color-border-strong);
+  border-radius: var(--blast-radius-lg);
+  background: var(--blast-white);
+}
+
+.callout {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--blast-space-2) var(--blast-space-3) var(--blast-space-2) var(--blast-space-2);
+  border: 1px solid var(--tone-border);
+  border-radius: var(--blast-radius-xs);
+  background: var(--blast-white);
+  white-space: nowrap;
+}
+.calloutTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--tone-fg);
+  font-size: var(--blast-font-size-base);
+  font-weight: var(--blast-font-weight-semibold);
+  line-height: 1.3;
+}
+.calloutTitle .glyph svg {
+  width: 16px;
+  height: 16px;
+}
+.calloutList {
+  margin: 0 0 0 7px;
+  padding: 0;
+  list-style: none;
+}
+.calloutItem {
+  position: relative;
+  padding-left: var(--blast-space-3);
+  color: var(--blast-color-text);
+  font-size: var(--blast-font-size-base);
+  line-height: 1.4;
+}
+/* Tree rule: vertical line down to the last item's midpoint + a tick per item. */
+.calloutItem::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: 1px solid var(--tone-border);
+}
+.calloutItem:last-child::before {
+  bottom: 50%;
+}
+.calloutItem::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 7px;
+  border-top: 1px solid var(--tone-border);
+}
+
+.caption {
+  display: inline-block;
+  max-width: 9ch;
+  color: var(--tone-fg);
+  font-size: var(--blast-font-size-sm);
+  font-weight: var(--blast-font-weight-semibold);
+  line-height: 1.3;
+  text-align: center;
+}
+
+.lock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--blast-radius-sm);
+  background: var(--blast-gray-500);
+  color: var(--blast-white);
+}
+.lock svg {
+  width: 13px;
+  height: 13px;
+}
+
+.port {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--tone-solid);
+  border-radius: var(--blast-radius-full);
+  background: var(--tone-solid);
+  box-shadow: inset 0 0 0 2px var(--blast-white);
+}
+
+.dotGrid {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(
+    circle,
+    var(--blast-canvas-dot) var(--blast-canvas-dot-size),
+    transparent calc(var(--blast-canvas-dot-size) + 0.4px)
+  );
+  background-size: var(--blast-canvas-dot-gap) var(--blast-canvas-dot-gap);
+  pointer-events: none;
+}
+
+/* Edge classes for SVG paths. color drives markers using currentColor. */
+.edge {
+  fill: none;
+  stroke: var(--edge-color);
+  stroke-width: var(--blast-edge-width);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--edge-color);
+}
+.edgeDashed {
+  stroke-dasharray: 4 4;
+}
+.edgeEmphasis {
+  stroke-width: 2px;
+}
+.edge-neutral { --edge-color: var(--blast-neutral-edge); }
+.edge-orange { --edge-color: var(--blast-orange-edge); }
+.edge-magenta { --edge-color: var(--blast-magenta-edge); }
+.edge-purple { --edge-color: var(--blast-purple-edge); }
+.edge-teal { --edge-color: var(--blast-teal-edge); }
+.edge-indigo { --edge-color: var(--blast-indigo-edge); }
+.edge-red { --edge-color: var(--blast-red-edge); }
+.edge-lime { --edge-color: var(--blast-lime-edge); }
+.edge-sky { --edge-color: var(--blast-sky-edge); }
+.edge-blue { --edge-color: var(--blast-blue-edge); }

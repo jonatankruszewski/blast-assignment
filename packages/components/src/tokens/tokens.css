@@ -1,2 +1,340 @@
+/*
+ * Blast design tokens. Every visual value used by @blast/components lives here
+ * so a Figma token export can replace this one file.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 :root {
+  /* Typography */
+  --blast-font-family:
+    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --blast-font-size-2xs: 11px;
+  --blast-font-size-xs: 12px;
+  --blast-font-size-sm: 13px;
+  --blast-font-size-md: 14px;
+  --blast-font-size-base: 15px;
+  --blast-font-size-lg: 16px;
+  --blast-font-size-xl: 20px;
+  --blast-font-weight-regular: 400;
+  --blast-font-weight-medium: 500;
+  --blast-font-weight-semibold: 600;
+  --blast-font-weight-bold: 700;
+  --blast-line-height-tight: 1.25;
+  --blast-line-height-normal: 1.45;
+
+  /* Spacing (4px scale) */
+  --blast-space-0: 0;
+  --blast-space-1: 4px;
+  --blast-space-2: 8px;
+  --blast-space-3: 12px;
+  --blast-space-4: 16px;
+  --blast-space-5: 20px;
+  --blast-space-6: 24px;
+  --blast-space-8: 32px;
+  --blast-space-10: 40px;
+
+  /* Radius */
+  --blast-radius-xs: 4px;
+  --blast-radius-sm: 6px;
+  --blast-radius-md: 8px;
+  --blast-radius-lg: 10px;
+  --blast-radius-xl: 12px;
+  --blast-radius-full: 999px;
+
+  /* Sizes */
+  --blast-topnav-height: 64px;
+  --blast-aside-width: 240px;
+  --blast-control-height: 40px;
+  --blast-control-height-sm: 32px;
+  --blast-pill-height: 32px;
+  --blast-tap-target: 44px;
+
+  /* Neutrals */
+  --blast-white: #ffffff;
+  --blast-gray-25: #fafafb;
+  --blast-gray-50: #f5f6f8;
+  --blast-gray-100: #eef0f3;
+  --blast-gray-200: #e3e6eb;
+  --blast-gray-300: #cfd3da;
+  --blast-gray-400: #a3a9b4;
+  --blast-gray-500: #7a818e;
+  --blast-gray-600: #5b6270;
+  --blast-gray-700: #3f4551;
+  --blast-gray-800: #272b33;
+  --blast-gray-900: #15171c;
+
+  /* Brand */
+  --blast-brand-500: #3b5bfd;
+  --blast-brand-600: #2a48e8;
+  --blast-brand-700: #1f38c4;
+  --blast-brand-50: #eef1ff;
+
+  /* Semantic surfaces and text */
+  --blast-color-bg: var(--blast-white);
+  --blast-color-surface: var(--blast-white);
+  --blast-color-surface-muted: var(--blast-gray-50);
+  --blast-color-border: var(--blast-gray-200);
+  --blast-color-border-strong: var(--blast-gray-300);
+  --blast-color-text: var(--blast-gray-900);
+  --blast-color-text-secondary: var(--blast-gray-600);
+  --blast-color-text-muted: var(--blast-gray-500);
+  --blast-color-text-on-brand: var(--blast-white);
+  --blast-color-link: var(--blast-brand-500);
+  --blast-color-focus: var(--blast-brand-500);
+  --blast-color-danger: #d92d20;
+
+  /* Top nav */
+  --blast-nav-bg: #1a1a1a;
+  --blast-nav-fg: #f4f4f5;
+  --blast-nav-field-bg: #262626;
+  --blast-nav-field-border: #4a4a4a;
+  --blast-nav-field-fg: #d4d4d8;
+  --blast-avatar-bg: #6d3fd8;
+  --blast-avatar-ring: #9b7bf0;
+  --blast-logo-bg: #ec6a4c;
+
+  /* Canvas */
+  --blast-canvas-dot: #d6d9df;
+  --blast-canvas-dot-gap: 20px;
+  --blast-canvas-dot-size: 1.2px;
+  --blast-edge-width: 1.25px;
+
+  /*
+   * Tone palettes: bg (soft fill), border (tinted outline), fg (text/icon),
+   * solid (filled variant), on-solid (text on solid), edge (graph lines),
+   * chart (series colour).
+   */
+  --blast-neutral-bg: var(--blast-white);
+  --blast-neutral-bg-muted: var(--blast-gray-50);
+  --blast-neutral-border: var(--blast-gray-300);
+  --blast-neutral-fg: var(--blast-gray-800);
+  --blast-neutral-solid: var(--blast-gray-600);
+  --blast-neutral-on-solid: var(--blast-white);
+  --blast-neutral-edge: #b8bdc7;
+  --blast-neutral-chart: var(--blast-gray-500);
+
+  --blast-orange-bg: #fff4e6;
+  --blast-orange-border: #f7c48a;
+  --blast-orange-fg: #b45309;
+  --blast-orange-solid: #f28c28;
+  --blast-orange-on-solid: #1a1a1a;
+  --blast-orange-edge: #f0a65c;
+  --blast-orange-chart: #f28c28;
+
+  --blast-magenta-bg: #fcebfc;
+  --blast-magenta-border: #eaa5ee;
+  --blast-magenta-fg: #a3239f;
+  --blast-magenta-solid: #b52bb1;
+  --blast-magenta-on-solid: var(--blast-white);
+  --blast-magenta-edge: #e08ee3;
+  --blast-magenta-chart: #c837c4;
+
+  --blast-purple-bg: #f2ecfe;
+  --blast-purple-border: #c7b3f7;
+  --blast-purple-fg: #6b35d4;
+  --blast-purple-solid: #6f5ce8;
+  --blast-purple-on-solid: var(--blast-white);
+  --blast-purple-edge: #a99bf2;
+  --blast-purple-chart: #9b9bf5;
+
+  --blast-teal-bg: #e4f7f5;
+  --blast-teal-border: #8fd6cf;
+  --blast-teal-fg: #0b6e69;
+  --blast-teal-solid: #0e8078;
+  --blast-teal-on-solid: var(--blast-white);
+  --blast-teal-edge: #7cc9c2;
+  --blast-teal-chart: #14a39a;
+
+  --blast-indigo-bg: #eef0fe;
+  --blast-indigo-border: #b5bdf5;
+  --blast-indigo-fg: #3a47c4;
+  --blast-indigo-solid: #4b57d9;
+  --blast-indigo-on-solid: var(--blast-white);
+  --blast-indigo-edge: #9aa4ee;
+  --blast-indigo-chart: #5b67e6;
+
+  --blast-red-bg: #fdeeee;
+  --blast-red-border: #e5484d;
+  --blast-red-fg: #b4171c;
+  --blast-red-solid: #d42f33;
+  --blast-red-on-solid: var(--blast-white);
+  --blast-red-edge: #e5484d;
+  --blast-red-chart: #8b1a1a;
+
+  --blast-lime-bg: #f4fad2;
+  --blast-lime-border: #c5da67;
+  --blast-lime-fg: #4a6508;
+  --blast-lime-solid: #9dbf1e;
+  --blast-lime-on-solid: #1a1a1a;
+  --blast-lime-edge: #b9cf5c;
+  --blast-lime-chart: #8fb31a;
+
+  --blast-sky-bg: #e9f5fd;
+  --blast-sky-border: #a7d4f2;
+  --blast-sky-fg: #1b5a88;
+  --blast-sky-solid: #1f76b4;
+  --blast-sky-on-solid: var(--blast-white);
+  --blast-sky-edge: #a7d4f2;
+  --blast-sky-chart: #3b9ede;
+
+  --blast-blue-bg: var(--blast-brand-50);
+  --blast-blue-border: #b3c0fe;
+  --blast-blue-fg: var(--blast-brand-700);
+  --blast-blue-solid: var(--blast-brand-500);
+  --blast-blue-on-solid: var(--blast-white);
+  --blast-blue-edge: #8ea0fd;
+  --blast-blue-chart: var(--blast-brand-500);
+
+  /* Shadows */
+  --blast-shadow-sm: 0 1px 2px rgb(16 24 40 / 6%);
+  --blast-shadow-md: 0 4px 12px rgb(16 24 40 / 10%), 0 1px 3px rgb(16 24 40 / 6%);
+  --blast-shadow-lg: 0 12px 32px rgb(16 24 40 / 16%);
+  --blast-focus-ring: 0 0 0 2px var(--blast-white), 0 0 0 4px var(--blast-color-focus);
+
+  /* Z-index */
+  --blast-z-nav: 20;
+  --blast-z-drawer: 30;
+  --blast-z-popover: 40;
+  --blast-z-tooltip: 50;
+
+  /* Motion */
+  --blast-duration-fast: 120ms;
+  --blast-duration-normal: 180ms;
+  --blast-easing: cubic-bezier(0.2, 0, 0, 1);
+
+  color-scheme: light;
+}
+
+/*
+ * Tone scoping: any element with data-tone exposes --tone-* for its subtree,
+ * so component CSS only reads --tone-bg / --tone-border / --tone-fg / ...
+ */
+[data-tone="neutral"] {
+  --tone-bg: var(--blast-neutral-bg);
+  --tone-border: var(--blast-neutral-border);
+  --tone-fg: var(--blast-neutral-fg);
+  --tone-solid: var(--blast-neutral-solid);
+  --tone-on-solid: var(--blast-neutral-on-solid);
+  --tone-edge: var(--blast-neutral-edge);
+  --tone-chart: var(--blast-neutral-chart);
+}
+[data-tone="orange"] {
+  --tone-bg: var(--blast-orange-bg);
+  --tone-border: var(--blast-orange-border);
+  --tone-fg: var(--blast-orange-fg);
+  --tone-solid: var(--blast-orange-solid);
+  --tone-on-solid: var(--blast-orange-on-solid);
+  --tone-edge: var(--blast-orange-edge);
+  --tone-chart: var(--blast-orange-chart);
+}
+[data-tone="magenta"] {
+  --tone-bg: var(--blast-magenta-bg);
+  --tone-border: var(--blast-magenta-border);
+  --tone-fg: var(--blast-magenta-fg);
+  --tone-solid: var(--blast-magenta-solid);
+  --tone-on-solid: var(--blast-magenta-on-solid);
+  --tone-edge: var(--blast-magenta-edge);
+  --tone-chart: var(--blast-magenta-chart);
+}
+[data-tone="purple"] {
+  --tone-bg: var(--blast-purple-bg);
+  --tone-border: var(--blast-purple-border);
+  --tone-fg: var(--blast-purple-fg);
+  --tone-solid: var(--blast-purple-solid);
+  --tone-on-solid: var(--blast-purple-on-solid);
+  --tone-edge: var(--blast-purple-edge);
+  --tone-chart: var(--blast-purple-chart);
+}
+[data-tone="teal"] {
+  --tone-bg: var(--blast-teal-bg);
+  --tone-border: var(--blast-teal-border);
+  --tone-fg: var(--blast-teal-fg);
+  --tone-solid: var(--blast-teal-solid);
+  --tone-on-solid: var(--blast-teal-on-solid);
+  --tone-edge: var(--blast-teal-edge);
+  --tone-chart: var(--blast-teal-chart);
+}
+[data-tone="indigo"] {
+  --tone-bg: var(--blast-indigo-bg);
+  --tone-border: var(--blast-indigo-border);
+  --tone-fg: var(--blast-indigo-fg);
+  --tone-solid: var(--blast-indigo-solid);
+  --tone-on-solid: var(--blast-indigo-on-solid);
+  --tone-edge: var(--blast-indigo-edge);
+  --tone-chart: var(--blast-indigo-chart);
+}
+[data-tone="red"] {
+  --tone-bg: var(--blast-red-bg);
+  --tone-border: var(--blast-red-border);
+  --tone-fg: var(--blast-red-fg);
+  --tone-solid: var(--blast-red-solid);
+  --tone-on-solid: var(--blast-red-on-solid);
+  --tone-edge: var(--blast-red-edge);
+  --tone-chart: var(--blast-red-chart);
+}
+[data-tone="lime"] {
+  --tone-bg: var(--blast-lime-bg);
+  --tone-border: var(--blast-lime-border);
+  --tone-fg: var(--blast-lime-fg);
+  --tone-solid: var(--blast-lime-solid);
+  --tone-on-solid: var(--blast-lime-on-solid);
+  --tone-edge: var(--blast-lime-edge);
+  --tone-chart: var(--blast-lime-chart);
+}
+[data-tone="sky"] {
+  --tone-bg: var(--blast-sky-bg);
+  --tone-border: var(--blast-sky-border);
+  --tone-fg: var(--blast-sky-fg);
+  --tone-solid: var(--blast-sky-solid);
+  --tone-on-solid: var(--blast-sky-on-solid);
+  --tone-edge: var(--blast-sky-edge);
+  --tone-chart: var(--blast-sky-chart);
+}
+[data-tone="blue"] {
+  --tone-bg: var(--blast-blue-bg);
+  --tone-border: var(--blast-blue-border);
+  --tone-fg: var(--blast-blue-fg);
+  --tone-solid: var(--blast-blue-solid);
+  --tone-on-solid: var(--blast-blue-on-solid);
+  --tone-edge: var(--blast-blue-edge);
+  --tone-chart: var(--blast-blue-chart);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--blast-font-family);
+  font-size: var(--blast-font-size-md);
+  line-height: var(--blast-line-height-normal);
+  color: var(--blast-color-text);
+  background: var(--blast-color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
 }

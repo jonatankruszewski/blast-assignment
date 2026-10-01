@@ -1,0 +1,27 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--blast-space-2);
+  color: inherit;
+}
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--blast-radius-full);
+  background: var(--blast-logo-bg);
+  color: var(--blast-white);
+}
+.mark svg {
+  width: 14px;
+  height: 14px;
+}
+.wordmark {
+  font-size: var(--blast-font-size-xl);
+  font-weight: var(--blast-font-weight-medium);
+  letter-spacing: 0.06em;
+  line-height: 1;
+}

@@ -132,11 +132,12 @@ interface LayoutEngine {
    fit-to-view on data change, roving-tabindex keyboard navigation over nodes, `role="group"`
    with `aria-label`, each node `role="button"` when activatable.
 
-**Build vs buy.** Recommended: build the renderer + simple layered layout ourselves (≈ small,
-dependency-free, fully controllable output that matches Figma). Keep `LayoutEngine` pluggable so
-an `elkjs` adapter (lazy-loaded, in a worker) can be added later if graphs get large or arbitrary.
-React Flow was considered: it brings editing features we don't need, its own styling, and makes
-bundled orthogonal edges and satellites harder to match pixel-for-pixel.
+**Build vs buy (decided 2026-10-01).** `@xyflow/react` is used *internally* for node hosting,
+measurement, viewport (fit/pan/zoom), selection and keyboard foundations, for a shorter feedback
+loop. It is read-only (no drag/connect/delete) and only its structural `base.css` is loaded. Its types
+never appear in the public API. Our own pure `layeredLayout` (satellites, groups) and orthogonal,
+bundled `routeEdges` still compute positions and paths, drawn by one custom xyflow edge. The
+`LayoutEngine` stays pluggable (an `elkjs` adapter later if graphs grow).
 
 **Riskiest assumption:** the router can reproduce the Figma edges (bracket fan-out, merge into
 Deny, port-originating violation line) cleanly. It is spiked first (M0) before anything depends on it.

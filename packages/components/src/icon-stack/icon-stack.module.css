@@ -1,0 +1,33 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--blast-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--blast-white);
+  border-radius: var(--blast-radius-full);
+  background: var(--tone-solid);
+  color: var(--tone-on-solid);
+  box-shadow: 0 0 0 1px var(--tone-border);
+}
+.badge svg {
+  width: 14px;
+  height: 14px;
+}
+.square {
+  border: 0;
+  border-radius: var(--blast-radius-xs);
+  box-shadow: none;
+}
+.soft {
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+}

@@ -1,0 +1,102 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--blast-space-2);
+  height: var(--blast-control-height);
+  padding: 0 var(--blast-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--blast-radius-sm);
+  font-size: var(--blast-font-size-base);
+  font-weight: var(--blast-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--blast-duration-fast) var(--blast-easing),
+    border-color var(--blast-duration-fast) var(--blast-easing),
+    color var(--blast-duration-fast) var(--blast-easing);
+}
+.button:focus-visible {
+  outline: 2px solid var(--blast-color-focus);
+  outline-offset: 2px;
+}
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.button[aria-busy="true"] {
+  cursor: progress;
+  opacity: 0.85;
+}
+
+.sm {
+  height: var(--blast-control-height-sm);
+  padding: 0 var(--blast-space-3);
+  font-size: var(--blast-font-size-md);
+}
+
+.icon {
+  display: inline-flex;
+  flex: none;
+}
+.icon svg {
+  width: 18px;
+  height: 18px;
+}
+.sm .icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.primary {
+  background: var(--blast-brand-500);
+  color: var(--blast-color-text-on-brand);
+}
+.primary:hover:not(:disabled) {
+  background: var(--blast-brand-600);
+}
+.primary:active:not(:disabled) {
+  background: var(--blast-brand-700);
+}
+
+.secondary {
+  background: var(--blast-color-surface);
+  border-color: var(--blast-color-border-strong);
+  color: var(--blast-color-text);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--blast-gray-50);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--blast-color-text);
+}
+.ghost:hover:not(:disabled) {
+  background: var(--blast-gray-100);
+}
+
+.link {
+  height: auto;
+  min-height: 24px;
+  padding: 0 var(--blast-space-1);
+  background: transparent;
+  color: var(--blast-color-link);
+  font-weight: var(--blast-font-weight-semibold);
+  gap: var(--blast-space-1);
+}
+.link:hover:not(:disabled) {
+  color: var(--blast-brand-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (pointer: coarse) {
+  .button:not(.link) {
+    min-height: var(--blast-tap-target);
+  }
+  .link {
+    min-height: var(--blast-tap-target);
+  }
+}

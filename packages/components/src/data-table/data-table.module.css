@@ -1,0 +1,62 @@
+.wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--blast-color-border);
+  border-radius: var(--blast-radius-md);
+  background: var(--blast-color-surface);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--blast-font-size-md);
+}
+.th {
+  padding: var(--blast-space-3) var(--blast-space-4);
+  border-bottom: 1px solid var(--blast-color-border);
+  background: var(--blast-gray-25);
+  color: var(--blast-color-text-secondary);
+  font-size: var(--blast-font-size-sm);
+  font-weight: var(--blast-font-weight-medium);
+  text-align: left;
+  white-space: nowrap;
+}
+.td {
+  padding: var(--blast-space-3) var(--blast-space-4);
+  border-bottom: 1px solid var(--blast-gray-100);
+  color: var(--blast-color-text);
+  vertical-align: middle;
+}
+.row:last-child .td {
+  border-bottom: 0;
+}
+.clickable {
+  position: relative;
+  cursor: pointer;
+}
+.clickable:hover .td {
+  background: var(--blast-gray-25);
+}
+.rowButton {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.rowButton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.rowButton:focus-visible {
+  outline: none;
+}
+.rowButton:focus-visible::after {
+  outline: 2px solid var(--blast-color-focus);
+  outline-offset: -2px;
+}
+.empty {
+  padding: var(--blast-space-2);
+}
