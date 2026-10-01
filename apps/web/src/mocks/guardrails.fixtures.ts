@@ -301,7 +301,7 @@ function cloudUnitFactor(cloudUnit: string | null): number {
 // ---- Activities ----------------------------------------------------------------------------
 
 /** Last day of the activity series (matches the screenshot's Sep 15 → Oct 14 window). */
-export const ACTIVITY_END_DATE = "2026-10-14";
+const ACTIVITY_END_DATE = "2026-10-14";
 const SERIES_DAYS = 90;
 
 /** [dayOffsetFromSep15, passed, blocked, excluded] traced from the screenshot. */

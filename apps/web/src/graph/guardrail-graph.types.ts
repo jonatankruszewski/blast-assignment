@@ -7,7 +7,7 @@ export type GraphTone = Tone;
 
 export type CountedResource = "identities" | "buckets";
 
-export interface NodeDataByType {
+interface NodeDataByType {
   caption: { label: string; tone: GraphTone };
   resourceCount: { resource: CountedResource; count: number; tone: GraphTone; label: string };
   permissionHub: { label: string };
@@ -26,7 +26,7 @@ export type GuardrailGraphNode = {
   [K in GuardrailNodeType]: GraphNode<NodeDataByType[K], K>;
 }[GuardrailNodeType];
 
-export interface GuardrailEdgeData {
+interface GuardrailEdgeData {
   dashed: boolean;
 }
 

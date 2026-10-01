@@ -1,3 +1,4 @@
 import { baseKnipConfig } from "@rxova/repo-config/knip";
 
-export default baseKnipConfig({ docsApp: false });
+// lint-staged backs the pre-commit hook, which is disabled until hardening (M7).
+export default baseKnipConfig({ docsApp: false, ignoreDependencies: ["lint-staged"] });

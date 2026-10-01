@@ -132,7 +132,7 @@ interface LayoutEngine {
    fit-to-view on data change, roving-tabindex keyboard navigation over nodes, `role="group"`
    with `aria-label`, each node `role="button"` when activatable.
 
-**Build vs buy (decided 2026-10-01).** `@xyflow/react` is used *internally* for node hosting,
+**Build vs buy (decided 2026-10-01).** `@xyflow/react` is used _internally_ for node hosting,
 measurement, viewport (fit/pan/zoom), selection and keyboard foundations, for a shorter feedback
 loop. It is read-only (no drag/connect/delete) and only its structural `base.css` is loaded. Its types
 never appear in the public API. Our own pure `layeredLayout` (satellites, groups) and orthogonal,

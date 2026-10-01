@@ -178,9 +178,6 @@ importers:
       '@rxova/repo-config':
         specifier: ^0.5.0
         version: 0.5.0(@commitlint/config-conventional@21.2.3)(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.2)(@eslint/js@10.0.1(eslint@10.11.0(jiti@2.7.0)))(eslint-plugin-jsx-a11y@6.10.2(eslint@10.11.0(jiti@2.7.0)))(eslint-plugin-react-hooks@7.1.1(eslint@10.11.0(jiti@2.7.0)))(eslint-plugin-react@7.37.5(eslint@10.11.0(jiti@2.7.0)))(eslint@10.11.0(jiti@2.7.0))(globals@17.12.0)(knip@6.39.0)(prettier@3.9.9)(typescript-eslint@8.71.0(eslint@10.11.0(jiti@2.7.0))(typescript@6.0.3))(typescript@6.0.3)(vitest@5.0.3(@types/node@26.6.3)(jsdom@30.1.1)(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)))
-      '@rxova/ts-utils':
-        specifier: ^0.2.0
-        version: 0.2.1(react@19.3.0)
       '@testing-library/jest-dom':
         specifier: ^7.0.1
         version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3(@types/node@26.6.3)(jsdom@30.1.1)(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0)(yaml@2.9.1)))
@@ -1102,15 +1099,6 @@ packages:
       typescript-eslint:
         optional: true
       vitest:
-        optional: true
-
-  '@rxova/ts-utils@0.2.1':
-    resolution: {integrity: sha512-iy7t/hN0HfJTijwHH/RYpP3mMCKb4WcIHAtfJkUmyAB/rT6idIYdEaNlNCdjAQ8EyMQlANsadkCXJd0Bz+4Htg==}
-    engines: {node: '>=22.13'}
-    peerDependencies:
-      react: '>=18'
-    peerDependenciesMeta:
-      react:
         optional: true
 
   '@simple-libs/child-process-utils@2.0.0':
@@ -3739,10 +3727,6 @@ snapshots:
     transitivePeerDependencies:
       - '@emnapi/core'
       - '@emnapi/runtime'
-
-  '@rxova/ts-utils@0.2.1(react@19.3.0)':
-    optionalDependencies:
-      react: 19.3.0
 
   '@simple-libs/child-process-utils@2.0.0':
     dependencies:

@@ -1,6 +1,6 @@
 /** Domain model for guardrails. No UI concepts (tones, icons) live here. */
 
-export type GuardrailKind = "preventive";
+type GuardrailKind = "preventive";
 export type Severity = "low" | "medium" | "high" | "critical";
 
 export const GUARDRAIL_TABS = [
@@ -16,35 +16,35 @@ export type GuardrailTab = (typeof GUARDRAIL_TABS)[number];
 
 /** Tabs that list rows and show a count in the tab label. */
 export type RowTab = Exclude<GuardrailTab, "overview" | "enforcement-analysis">;
-export type GuardrailCounts = Record<RowTab, number>;
+type GuardrailCounts = Record<RowTab, number>;
 
 export type RiskKind = "defense-evasion" | "data-exposure" | "privilege-escalation";
-export interface Risk {
+interface Risk {
   id: RiskKind;
   label: string;
 }
 
 export type ComplianceFramework = "blast" | "cis" | "nist" | "iso";
-export interface SecurityRequirement {
+interface SecurityRequirement {
   id: ComplianceFramework;
   label: string;
 }
 
-export interface ExternalRef {
+interface ExternalRef {
   id: string;
   url: string;
 }
 
-export interface MitreTechnique extends ExternalRef {
+interface MitreTechnique extends ExternalRef {
   name: string;
 }
 
-export interface CloudService {
+interface CloudService {
   id: string;
   name: string;
 }
 
-export type DeploymentStatus = "deployed" | "draft";
+type DeploymentStatus = "deployed" | "draft";
 
 export interface Guardrail {
   id: string;
@@ -64,17 +64,17 @@ export interface Guardrail {
 
 export type ActionKind = "delete" | "create" | "edit" | "discover" | "view";
 export type ActionEffect = "deny" | "allow";
-export interface GuardrailAction {
+interface GuardrailAction {
   kind: ActionKind;
   effect: ActionEffect;
 }
 
-export interface ResourceCounts {
+interface ResourceCounts {
   identities: number;
   buckets: number;
 }
 
-export interface ViolationCounts {
+interface ViolationCounts {
   findings: number;
   issues: number;
   threats: number;
@@ -114,7 +114,7 @@ export interface ActivityPoint {
 }
 
 export type ActivityOutcome = "passed" | "blocked" | "excluded";
-export interface PreviousActivityRow {
+interface PreviousActivityRow {
   id: string;
   date: string;
   actor: string;
@@ -123,8 +123,8 @@ export interface PreviousActivityRow {
   outcome: ActivityOutcome;
 }
 
-export type ResourceKind = "identity" | "bucket";
-export interface AffectedResourceRow {
+type ResourceKind = "identity" | "bucket";
+interface AffectedResourceRow {
   id: string;
   name: string;
   kind: ResourceKind;
@@ -132,7 +132,7 @@ export interface AffectedResourceRow {
   region: string;
 }
 
-export interface ViolationRow {
+interface ViolationRow {
   id: string;
   title: string;
   severity: Severity;
@@ -140,7 +140,7 @@ export interface ViolationRow {
   detectedAt: string;
 }
 
-export interface ExclusionRow {
+interface ExclusionRow {
   id: string;
   name: string;
   kind: ResourceKind;
@@ -149,7 +149,7 @@ export interface ExclusionRow {
 }
 
 export type TaskStatus = "open" | "in-progress" | "done";
-export interface TaskRow {
+interface TaskRow {
   id: string;
   title: string;
   assignee: string;

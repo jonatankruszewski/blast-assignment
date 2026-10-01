@@ -2,7 +2,7 @@ import { Button, ErrorState, Spinner, Stack } from "@blast/components";
 import { Component, lazy, Suspense, type ReactNode } from "react";
 
 /** Dev-only views served from the same dev server (`?view=...`). Loaded lazily so they stay out of the app bundle. */
-export const DEV_VIEWS = {
+const DEV_VIEWS = {
   gallery: {
     label: "Component gallery",
     Component: lazy(() =>

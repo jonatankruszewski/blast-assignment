@@ -4,15 +4,36 @@
   "globalDependencies": ["tsconfig.base.json", ".nvmrc"],
   "globalPassThroughEnv": ["CI"],
   "tasks": {
-    "build": { "dependsOn": ["^build"], "outputs": ["dist/**"], "outputLogs": "new-only" },
-    "typecheck": { "outputs": [], "outputLogs": "new-only" },
-    "test": { "outputs": ["coverage/**"], "outputLogs": "new-only" },
-    "//#eslint:check": { "outputs": [], "outputLogs": "new-only" },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "outputLogs": "new-only"
+    },
+    "typecheck": {
+      "outputs": [],
+      "outputLogs": "new-only"
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "outputLogs": "new-only"
+    },
+    "//#eslint:check": {
+      "outputs": [],
+      "outputLogs": "new-only"
+    },
     "//#prettier:check": {
       "inputs": ["$TURBO_DEFAULT$", "!pnpm-lock.yaml"],
       "outputs": [],
       "outputLogs": "new-only"
     },
-    "dev": { "cache": false, "persistent": true }
+    "//#dedupe:check": {
+      "inputs": ["pnpm-lock.yaml", "package.json", "**/package.json"],
+      "outputs": [],
+      "outputLogs": "new-only"
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
   }
 }

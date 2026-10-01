@@ -112,7 +112,7 @@ const buildStructure = (nodes: readonly MeasuredNode[]): Structure => {
  * Satellites sharing an anchor side are distributed side by side (top/bottom) or stacked
  * (left/right) and aligned as a block against the anchor.
  */
-export const placeSatellites = (
+const placeSatellites = (
   satellites: readonly GraphNode[],
   anchorOf: ReadonlyMap<NodeId, NodeId>,
   sizeOf: (id: NodeId) => Size,

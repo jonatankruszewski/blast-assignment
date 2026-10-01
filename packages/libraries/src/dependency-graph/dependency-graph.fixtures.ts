@@ -9,7 +9,7 @@ export interface FixtureData {
   label: string;
 }
 
-export type FixtureNodeType = "chip" | "caption" | "pill" | "group" | "callout";
+type FixtureNodeType = "chip" | "caption" | "pill" | "group" | "callout";
 export type FixtureNode = GraphNode<FixtureData, FixtureNodeType>;
 export type FixtureEdge = GraphEdge;
 

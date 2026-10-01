@@ -30,7 +30,7 @@ const tickFormat = new Intl.DateTimeFormat("en-US", {
 });
 
 /** "2026-09-15" → "SEP. 15" as in the design. */
-export function formatTickDate(iso: string): string {
+function formatTickDate(iso: string): string {
   const parts = tickFormat.formatToParts(new Date(`${iso}T00:00:00Z`));
   const month = parts.find((p) => p.type === "month")?.value ?? "";
   const day = parts.find((p) => p.type === "day")?.value ?? "";
