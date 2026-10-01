@@ -7,9 +7,12 @@ export function useCopyLink(resetAfterMs = 2000) {
   const [status, setStatus] = useState<CopyStatus>("idle");
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  useEffect(() => () => {
-    clearTimeout(timer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      clearTimeout(timer.current);
+    },
+    [],
+  );
 
   const report = (next: CopyStatus) => {
     setStatus(next);

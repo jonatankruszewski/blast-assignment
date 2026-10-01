@@ -1,5 +1,6 @@
 import { EmptyState } from "@blast/components";
 import type { Guardrail, GuardrailTab } from "../../domain/guardrail.types.js";
+import { RowTabPanel } from "./row-tabs/row-tab-panel.js";
 import { OverviewTab } from "./overview/overview-tab.js";
 
 interface TabContentProps {
@@ -19,6 +20,6 @@ export function TabContent({ guardrail, tab }: TabContentProps) {
         />
       );
     default:
-      return <EmptyState title="Coming soon" description={`${String(guardrail.counts[tab])} rows`} />;
+      return <RowTabPanel key={tab} guardrailId={guardrail.id} tab={tab} />;
   }
 }

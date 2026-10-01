@@ -25,7 +25,13 @@ describe("parseDrawerRoute", () => {
   it("reads every param", () => {
     expect(
       parseDrawerRoute("?guardrail=g1&tab=violations&layers=exclusions&cloudUnit=ou-1&range=90d"),
-    ).toEqual({ guardrailId: "g1", tab: "violations", layers: "exclusions", cloudUnit: "ou-1", range: "90d" });
+    ).toEqual({
+      guardrailId: "g1",
+      tab: "violations",
+      layers: "exclusions",
+      cloudUnit: "ou-1",
+      range: "90d",
+    });
   });
 
   it("falls back on unknown values", () => {
@@ -107,7 +113,11 @@ describe("useDrawerRoute", () => {
       result.current.setCloudUnit("ou-production");
     });
     expect(window.history.length).toBe(start + 1);
-    expect(result.current.route).toMatchObject({ range: "7d", layers: "violations", cloudUnit: "ou-production" });
+    expect(result.current.route).toMatchObject({
+      range: "7d",
+      layers: "violations",
+      cloudUnit: "ou-production",
+    });
   });
 
   it("follows back/forward (popstate)", () => {

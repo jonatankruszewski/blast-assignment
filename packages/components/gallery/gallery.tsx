@@ -214,7 +214,13 @@ export function Gallery() {
         </div>
         <div className={styles.row}>
           <IconTile tone="orange" size="lg" icon={<Construction />} />
-          <IconTile tone="red" size="sm" variant="solid" icon={<Radar />} label="AWS Access Analyzer" />
+          <IconTile
+            tone="red"
+            size="sm"
+            variant="solid"
+            icon={<Radar />}
+            label="AWS Access Analyzer"
+          />
           {tones.map((tone) => (
             <IconTile key={tone} tone={tone} icon={<ShieldCheck />} />
           ))}
@@ -254,7 +260,12 @@ export function Gallery() {
           <GraphPill tone="red" variant="outline" icon={<Ban />} label="Deny" />
           <GraphPill tone="neutral" variant="outline" label="Permissions" />
           <GraphPill tone="sky" icon={<LockOpen />} label="Exclusions" />
-          <GraphPill tone="purple" variant="solid" icon={<FolderLock />} label="Service control policy" />
+          <GraphPill
+            tone="purple"
+            variant="solid"
+            icon={<FolderLock />}
+            label="Service control policy"
+          />
           <GraphPill tone="indigo" icon={<Eye />} label="Interactive" interactive />
           <GraphPill tone="teal" icon={<Search />} label="Selected" selected />
         </div>
@@ -342,7 +353,13 @@ export function Gallery() {
 
       <Block title="Metadata panel">
         <div className={styles.aside}>
-          <MetadataPanel header={<Button variant="link" icon={<EyeOff />}>Hide Metadata</Button>}>
+          <MetadataPanel
+            header={
+              <Button variant="link" icon={<EyeOff />}>
+                Hide Metadata
+              </Button>
+            }
+          >
             <MetadataItem label="Guardrail Type">Defense Hardening</MetadataItem>
             <MetadataItem label="Cloud service">
               <IconTile tone="red" size="sm" variant="solid" icon={<Radar />} />
@@ -369,17 +386,30 @@ export function Gallery() {
           }}
           columns={[
             { key: "name", header: "Name" },
-            { key: "severity", header: "Severity", width: 120, render: (row) => <Tag>{row.severity}</Tag> },
+            {
+              key: "severity",
+              header: "Severity",
+              width: 120,
+              render: (row) => <Tag>{row.severity}</Tag>,
+            },
           ]}
         />
-        <DataTable ariaLabel="Empty" rows={[]} getRowId={(row: Row) => row.id} columns={[{ key: "name", header: "Name" }]} />
+        <DataTable
+          ariaLabel="Empty"
+          rows={[]}
+          getRowId={(row: Row) => row.id}
+          columns={[{ key: "name", header: "Name" }]}
+        />
         <Stack direction="row" gap={6} wrap align="center">
           <Spinner />
           <Stack gap={2}>
             <Skeleton width={200} />
             <Skeleton width={140} />
           </Stack>
-          <EmptyState title="No violations" description="Nothing has violated this guardrail yet." />
+          <EmptyState
+            title="No violations"
+            description="Nothing has violated this guardrail yet."
+          />
           <ErrorState
             title="Couldn't load activities"
             description="Check your connection and try again."

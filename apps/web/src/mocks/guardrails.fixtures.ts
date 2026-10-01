@@ -34,7 +34,10 @@ export const guardrailsFixture: Guardrail[] = [
       name: "Impair Defenses",
       url: "https://attack.mitre.org/techniques/T1562/",
     },
-    containingPolicy: { id: "0590aeb", url: "https://console.aws.amazon.com/organizations/v2/home/policies" },
+    containingPolicy: {
+      id: "0590aeb",
+      url: "https://console.aws.amazon.com/organizations/v2/home/policies",
+    },
     counts: {
       "previous-activities": 15,
       "affected-resources": 34,
@@ -58,7 +61,10 @@ export const guardrailsFixture: Guardrail[] = [
       name: "Disable Cloud Logs",
       url: "https://attack.mitre.org/techniques/T1562/008/",
     },
-    containingPolicy: { id: "7c21f04", url: "https://console.aws.amazon.com/organizations/v2/home/policies" },
+    containingPolicy: {
+      id: "7c21f04",
+      url: "https://console.aws.amazon.com/organizations/v2/home/policies",
+    },
     counts: {
       "previous-activities": 8,
       "affected-resources": 12,
@@ -82,7 +88,10 @@ export const guardrailsFixture: Guardrail[] = [
       name: "Data from Cloud Storage",
       url: "https://attack.mitre.org/techniques/T1530/",
     },
-    containingPolicy: { id: "a91be33", url: "https://console.aws.amazon.com/organizations/v2/home/policies" },
+    containingPolicy: {
+      id: "a91be33",
+      url: "https://console.aws.amazon.com/organizations/v2/home/policies",
+    },
     counts: {
       "previous-activities": 22,
       "affected-resources": 57,
@@ -106,7 +115,10 @@ export const guardrailsFixture: Guardrail[] = [
       name: "Disable or Modify Tools",
       url: "https://attack.mitre.org/techniques/T1562/001/",
     },
-    containingPolicy: { id: "3fd0c7e", url: "https://console.aws.amazon.com/organizations/v2/home/policies" },
+    containingPolicy: {
+      id: "3fd0c7e",
+      url: "https://console.aws.amazon.com/organizations/v2/home/policies",
+    },
     counts: {
       "previous-activities": 5,
       "affected-resources": 9,
@@ -130,7 +142,10 @@ export const guardrailsFixture: Guardrail[] = [
       name: "Account Manipulation",
       url: "https://attack.mitre.org/techniques/T1098/",
     },
-    containingPolicy: { id: "be4410a", url: "https://console.aws.amazon.com/organizations/v2/home/policies" },
+    containingPolicy: {
+      id: "be4410a",
+      url: "https://console.aws.amazon.com/organizations/v2/home/policies",
+    },
     counts: {
       "previous-activities": 3,
       "affected-resources": 1,
@@ -154,7 +169,10 @@ export const guardrailsFixture: Guardrail[] = [
       name: "Data Destruction",
       url: "https://attack.mitre.org/techniques/T1485/",
     },
-    containingPolicy: { id: "d02c9b1", url: "https://console.aws.amazon.com/organizations/v2/home/policies" },
+    containingPolicy: {
+      id: "d02c9b1",
+      url: "https://console.aws.amazon.com/organizations/v2/home/policies",
+    },
     counts: {
       "previous-activities": 11,
       "affected-resources": 18,
@@ -178,7 +196,10 @@ export const guardrailsFixture: Guardrail[] = [
       name: "Disable Cloud Logs",
       url: "https://attack.mitre.org/techniques/T1562/008/",
     },
-    containingPolicy: { id: "51e8f2a", url: "https://console.aws.amazon.com/organizations/v2/home/policies" },
+    containingPolicy: {
+      id: "51e8f2a",
+      url: "https://console.aws.amazon.com/organizations/v2/home/policies",
+    },
     counts: {
       "previous-activities": 0,
       "affected-resources": 6,
@@ -424,7 +445,11 @@ export function tabRowsFixture<K extends keyof TabRowMap>(
       range(count).map((i) => ({
         id: `${guardrail.id}-task-${String(i)}`,
         title: pick(
-          ["Review break-glass exclusion", "Notify owners of affected roles", "Rotate analyzer admins"],
+          [
+            "Review break-glass exclusion",
+            "Notify owners of affected roles",
+            "Rotate analyzer admins",
+          ],
           i,
         ),
         assignee: pick(ACTORS, i + 1),

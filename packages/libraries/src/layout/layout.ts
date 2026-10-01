@@ -107,10 +107,6 @@ const buildStructure = (nodes: readonly MeasuredNode[]): Structure => {
   return { byId, index, scopeOf, anchorOf, members, groups };
 };
 
-interface Placement {
-  rects: Map<NodeId, Rect>;
-}
-
 /**
  * Places satellites around already placed anchors (in waves, so satellites of satellites work).
  * Satellites sharing an anchor side are distributed side by side (top/bottom) or stacked
@@ -336,7 +332,8 @@ export const layeredLayout =
           sizes.set(id, { width: inner.width + 2 * p, height: inner.height + 2 * p });
           for (const child of s.members.get(id) ?? []) {
             const r = relative.get(child);
-            if (r !== undefined) relative.set(child, { x: r.x - inner.x + p, y: r.y - inner.y + p });
+            if (r !== undefined)
+              relative.set(child, { x: r.x - inner.x + p, y: r.y - inner.y + p });
           }
         } else {
           sizes.set(id, resolveSize(s.byId.get(id)));
@@ -415,7 +412,8 @@ const compose = (
     if (done !== undefined) return done;
     const rel = relative.get(id) ?? { x: 0, y: 0 };
     const scope = s.scopeOf.get(id) ?? ROOT;
-    const origin = scope === ROOT || depth > nodes.length ? { x: 0, y: 0 } : absolute(scope, depth + 1);
+    const origin =
+      scope === ROOT || depth > nodes.length ? { x: 0, y: 0 } : absolute(scope, depth + 1);
     const p = { x: origin.x + rel.x, y: origin.y + rel.y };
     positions[id] = p;
     return p;
@@ -433,7 +431,9 @@ const compose = (
   return { positions, sizes: sizeRecord, bounds };
 };
 
-const resolveOptions = (o: LayeredLayoutOptions): Required<{ [K in keyof LayeredLayoutOptions]: number }> => ({
+const resolveOptions = (
+  o: LayeredLayoutOptions,
+): Required<{ [K in keyof LayeredLayoutOptions]: number }> => ({
   rankSpacing: o.rankSpacing ?? DEFAULTS.rankSpacing,
   nodeSpacing: o.nodeSpacing ?? DEFAULTS.nodeSpacing,
   groupPadding: o.groupPadding ?? DEFAULTS.groupPadding,

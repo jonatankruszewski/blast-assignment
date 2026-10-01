@@ -51,6 +51,4 @@ export const nextInDirection = (
 
 /** Reading order for a left→right graph: by column (x), then top to bottom. */
 export const readingOrder = (items: readonly NavItem[]): NodeId[] =>
-  [...items]
-    .sort((a, b) => a.rect.x - b.rect.x || a.rect.y - b.rect.y)
-    .map((i) => i.id);
+  [...items].sort((a, b) => a.rect.x - b.rect.x || a.rect.y - b.rect.y).map((i) => i.id);

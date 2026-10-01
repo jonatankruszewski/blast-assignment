@@ -11,7 +11,7 @@ import type {
 import { OPPOSITE_SIDE, isHorizontalSide, sideDirection, sidePoint } from "../geometry/geometry.js";
 import type { RouteOptions } from "./routing.types.js";
 
-const round = (n: number): number => Math.round(n * 100) / 100;
+const round = (n: number): string => String(Math.round(n * 100) / 100);
 
 /** Side of `rect` facing point `p` (left→right flow preferred). */
 export const sideFacing = (rect: Rect, p: Point): Side => {
@@ -68,8 +68,14 @@ export const roundedPath = (points: readonly Point[], radius: number): string =>
       d += ` L${round(cur.x)},${round(cur.y)}`;
       continue;
     }
-    const a = { x: cur.x - ((cur.x - prev.x) / lenIn) * r, y: cur.y - ((cur.y - prev.y) / lenIn) * r };
-    const b = { x: cur.x + ((next.x - cur.x) / lenOut) * r, y: cur.y + ((next.y - cur.y) / lenOut) * r };
+    const a = {
+      x: cur.x - ((cur.x - prev.x) / lenIn) * r,
+      y: cur.y - ((cur.y - prev.y) / lenIn) * r,
+    };
+    const b = {
+      x: cur.x + ((next.x - cur.x) / lenOut) * r,
+      y: cur.y + ((next.y - cur.y) / lenOut) * r,
+    };
     d += ` L${round(a.x)},${round(a.y)} Q${round(cur.x)},${round(cur.y)} ${round(b.x)},${round(b.y)}`;
   }
   const last = points[points.length - 1];
@@ -101,7 +107,10 @@ export const orthogonalPoints = (
       const x = sd.x > 0 ? Math.max(start.x, end.x) + stub : Math.min(start.x, end.x) - stub;
       return [start, { x, y: start.y }, { x, y: end.y }, end];
     }
-    if ((end.x - start.x) * sd.x >= 2 * stub || ((end.x - start.x) * sd.x > 0 && mid !== undefined)) {
+    if (
+      (end.x - start.x) * sd.x >= 2 * stub ||
+      ((end.x - start.x) * sd.x > 0 && mid !== undefined)
+    ) {
       const m = mid ?? (start.x + end.x) / 2;
       return [start, { x: m, y: start.y }, { x: m, y: end.y }, end];
     }
@@ -113,7 +122,10 @@ export const orthogonalPoints = (
       const y = sd.y > 0 ? Math.max(start.y, end.y) + stub : Math.min(start.y, end.y) - stub;
       return [start, { x: start.x, y }, { x: end.x, y }, end];
     }
-    if ((end.y - start.y) * sd.y >= 2 * stub || ((end.y - start.y) * sd.y > 0 && mid !== undefined)) {
+    if (
+      (end.y - start.y) * sd.y >= 2 * stub ||
+      ((end.y - start.y) * sd.y > 0 && mid !== undefined)
+    ) {
       const m = mid ?? (start.y + end.y) / 2;
       return [start, { x: start.x, y: m }, { x: end.x, y: m }, end];
     }
@@ -194,12 +206,8 @@ export const routeEdges = <E extends GraphEdge>(
       const sp = sPort === undefined ? undefined : sidePoint(sr, sPort.side, sPort.offset);
       const tp = tPort === undefined ? undefined : sidePoint(tr, tPort.side, tPort.offset);
       const relation = sAttach?.to === target.id || tAttach?.to === source.id;
-      sourceSide =
-        sPort?.side ??
-        (tp !== undefined && !relation ? sideFacing(sr, tp) : auto[0]);
-      targetSide =
-        tPort?.side ??
-        (sp !== undefined && !relation ? sideFacing(tr, sp) : auto[1]);
+      sourceSide = sPort?.side ?? (tp !== undefined && !relation ? sideFacing(sr, tp) : auto[0]);
+      targetSide = tPort?.side ?? (sp !== undefined && !relation ? sideFacing(tr, sp) : auto[1]);
     }
     const start = sidePoint(sr, sourceSide, sPort?.offset ?? 0.5);
     const end = sidePoint(tr, targetSide, tPort?.offset ?? 0.5);
@@ -209,7 +217,9 @@ export const routeEdges = <E extends GraphEdge>(
   // Shared trunk coordinate per bundle and orientation.
   const trunks = new Map<string, number>();
   const trunkKey = (r: Resolved<E>) =>
-    r.edge.bundle === undefined ? undefined : `${r.edge.bundle}\u0000${r.sourceSide}>${r.targetSide}`;
+    r.edge.bundle === undefined
+      ? undefined
+      : `${r.edge.bundle}\u0000${r.sourceSide}>${r.targetSide}`;
   const groups = new Map<string, Resolved<E>[]>();
   for (const r of resolved) {
     const key = trunkKey(r);

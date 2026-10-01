@@ -13,7 +13,7 @@ export function Tabs({ items, value, onChange, ariaLabel }: TabsProps) {
     listRef.current?.querySelector<HTMLButtonElement>(`#${CSS.escape(tabId(id))}`)?.focus();
   };
 
-  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+  const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
     const enabled = items.filter((item) => !item.disabled);
     if (enabled.length === 0) return;
     const current = enabled.findIndex((item) => item.id === value);
@@ -48,7 +48,6 @@ export function Tabs({ items, value, onChange, ariaLabel }: TabsProps) {
       aria-label={ariaLabel}
       aria-orientation="horizontal"
       className={styles.list}
-      onKeyDown={onKeyDown}
     >
       {items.map((item) => {
         const selected = item.id === value;
@@ -63,6 +62,7 @@ export function Tabs({ items, value, onChange, ariaLabel }: TabsProps) {
             tabIndex={selected ? 0 : -1}
             disabled={item.disabled}
             className={styles.tab}
+            onKeyDown={onKeyDown}
             onClick={() => {
               onChange(item.id);
             }}

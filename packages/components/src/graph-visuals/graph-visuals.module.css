@@ -220,13 +220,33 @@
 .edgeEmphasis {
   stroke-width: 2px;
 }
-.edge-neutral { --edge-color: var(--blast-neutral-edge); }
-.edge-orange { --edge-color: var(--blast-orange-edge); }
-.edge-magenta { --edge-color: var(--blast-magenta-edge); }
-.edge-purple { --edge-color: var(--blast-purple-edge); }
-.edge-teal { --edge-color: var(--blast-teal-edge); }
-.edge-indigo { --edge-color: var(--blast-indigo-edge); }
-.edge-red { --edge-color: var(--blast-red-edge); }
-.edge-lime { --edge-color: var(--blast-lime-edge); }
-.edge-sky { --edge-color: var(--blast-sky-edge); }
-.edge-blue { --edge-color: var(--blast-blue-edge); }
+.edge-neutral {
+  --edge-color: var(--blast-neutral-edge);
+}
+.edge-orange {
+  --edge-color: var(--blast-orange-edge);
+}
+.edge-magenta {
+  --edge-color: var(--blast-magenta-edge);
+}
+.edge-purple {
+  --edge-color: var(--blast-purple-edge);
+}
+.edge-teal {
+  --edge-color: var(--blast-teal-edge);
+}
+.edge-indigo {
+  --edge-color: var(--blast-indigo-edge);
+}
+.edge-red {
+  --edge-color: var(--blast-red-edge);
+}
+.edge-lime {
+  --edge-color: var(--blast-lime-edge);
+}
+.edge-sky {
+  --edge-color: var(--blast-sky-edge);
+}
+.edge-blue {
+  --edge-color: var(--blast-blue-edge);
+}

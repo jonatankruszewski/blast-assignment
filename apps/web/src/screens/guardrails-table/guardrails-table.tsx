@@ -1,8 +1,46 @@
-import { Button, EmptyState, ErrorState, Section, Skeleton, Stack } from "@blast/components";
+import {
+  DataTable,
+  EmptyState,
+  ErrorState,
+  Section,
+  Skeleton,
+  Stack,
+  Tag,
+  type DataTableColumn,
+} from "@blast/components";
+import type { Guardrail } from "../../domain/guardrail.types.js";
 import { useDrawerRoute } from "../../hooks/use-drawer-route.js";
 import { useGuardrails } from "../../hooks/use-guardrails.js";
+import { SEVERITY_TONE } from "../guardrail-drawer/severity.js";
 
-/** Interim list (Buttons) until DataTable lands. */
+const COLUMNS: DataTableColumn<Guardrail>[] = [
+  { key: "name", header: "Guardrail" },
+  { key: "type", header: "Type" },
+  { key: "cloudService", header: "Cloud service", render: (g) => g.cloudService.name },
+  {
+    key: "severity",
+    header: "Severity",
+    width: 110,
+    render: (g) => <Tag tone={SEVERITY_TONE[g.severity]}>{g.severity.toUpperCase()}</Tag>,
+  },
+  {
+    key: "violations",
+    header: "Violations",
+    width: 110,
+    render: (g) => String(g.counts.violations),
+  },
+  {
+    key: "status",
+    header: "Status",
+    width: 120,
+    render: (g) => (
+      <Tag tone={g.status === "deployed" ? "lime" : "neutral"}>
+        {g.status === "deployed" ? "Deployed" : "Draft"}
+      </Tag>
+    ),
+  },
+];
+
 export function GuardrailsTable() {
   const guardrails = useGuardrails();
   const { open } = useDrawerRoute();
@@ -11,7 +49,11 @@ export function GuardrailsTable() {
     <Stack direction="column" gap={4} padding={6}>
       <Section title="Guardrails" headingLevel={2}>
         {guardrails.isPending ? (
-          <Skeleton height={240} />
+          <Stack direction="column" gap={2}>
+            <Skeleton height={40} />
+            <Skeleton height={40} />
+            <Skeleton height={40} />
+          </Stack>
         ) : guardrails.isError ? (
           <ErrorState
             title="Could not load guardrails"
@@ -19,22 +61,18 @@ export function GuardrailsTable() {
               void guardrails.refetch();
             }}
           />
-        ) : guardrails.data.length === 0 ? (
-          <EmptyState title="No guardrails yet" />
         ) : (
-          <Stack direction="column" gap={2} align="start">
-            {guardrails.data.map((g) => (
-              <Button
-                key={g.id}
-                variant="link"
-                onClick={() => {
-                  open(g.id);
-                }}
-              >
-                {g.name}
-              </Button>
-            ))}
-          </Stack>
+          <DataTable
+            ariaLabel="Guardrails"
+            columns={COLUMNS}
+            rows={guardrails.data}
+            getRowId={(g) => g.id}
+            getRowLabel={(g) => `Open ${g.name}`}
+            onRowClick={(g) => {
+              open(g.id);
+            }}
+            emptyState={<EmptyState title="No guardrails yet" />}
+          />
         )}
       </Section>
     </Stack>

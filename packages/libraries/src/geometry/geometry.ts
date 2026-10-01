@@ -1,4 +1,10 @@
-import type { Anchor, GraphPort, Point, Rect, Side } from "../dependency-graph/dependency-graph.types.js";
+import type {
+  Anchor,
+  GraphPort,
+  Point,
+  Rect,
+  Side,
+} from "../dependency-graph/dependency-graph.types.js";
 
 export const OPPOSITE_SIDE: Readonly<Record<Side, Side>> = {
   top: "bottom",

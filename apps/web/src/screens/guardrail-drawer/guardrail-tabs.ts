@@ -12,8 +12,11 @@ const TAB_LABELS: Record<GuardrailTab, string> = {
 
 export function guardrailTabItems(guardrail: Guardrail) {
   return GUARDRAIL_TABS.map((id) => {
-    const count = id === "overview" || id === "enforcement-analysis" ? undefined : guardrail.counts[id];
-    return count === undefined ? { id, label: TAB_LABELS[id] } : { id, label: TAB_LABELS[id], count };
+    const count =
+      id === "overview" || id === "enforcement-analysis" ? undefined : guardrail.counts[id];
+    return count === undefined
+      ? { id, label: TAB_LABELS[id] }
+      : { id, label: TAB_LABELS[id], count };
   });
 }
 

@@ -73,7 +73,14 @@ function edge(
   tone: GraphTone,
   extra: Omit<Partial<GuardrailGraphEdge>, "id" | "source" | "target" | "type"> = {},
 ): GuardrailGraphEdge {
-  return { id: `${source}->${target}`, source, target, type: tone, data: { dashed: false }, ...extra };
+  return {
+    id: `${source}->${target}`,
+    source,
+    target,
+    type: tone,
+    data: { dashed: false },
+    ...extra,
+  };
 }
 
 /**
@@ -95,7 +102,11 @@ export function toGuardrailGraph(defense: GuardrailDefense): GuardrailGraph {
       data: { resource, count, tone: "lime", label: resourceLabel(resource, count) },
       layout: { rank: RANK.resources, order },
     });
-    edges.push(edge(NODE_ID.resource(resource), NODE_ID.permissions, "neutral", { bundle: BUNDLE.permissionsIn }));
+    edges.push(
+      edge(NODE_ID.resource(resource), NODE_ID.permissions, "neutral", {
+        bundle: BUNDLE.permissionsIn,
+      }),
+    );
   });
   const [firstResource] = resources;
   if (firstResource) {
@@ -104,7 +115,9 @@ export function toGuardrailGraph(defense: GuardrailDefense): GuardrailGraph {
       type: "caption",
       data: { label: "Affected Resources", tone: "lime" },
       inert: true,
-      layout: { attach: { to: NODE_ID.resource(firstResource), side: "top", gap: 4, align: "center" } },
+      layout: {
+        attach: { to: NODE_ID.resource(firstResource), side: "top", gap: 4, align: "center" },
+      },
     });
   }
 
@@ -152,11 +165,19 @@ export function toGuardrailGraph(defense: GuardrailDefense): GuardrailGraph {
 
   // Rank 4: the protected target (a group containing the service pill).
   const exclusionTotal = defense.exclusions.identities + defense.exclusions.buckets;
-  const violationTotal = defense.violations.findings + defense.violations.issues + defense.violations.threats;
-  const targetPorts: NonNullable<GuardrailGraphNode["ports"]> = [{ id: TARGET_PORTS.in, side: "left", offset: 0.5 }];
-  if (exclusionTotal > 0) targetPorts.push({ id: TARGET_PORTS.exclusions, side: "bottom", offset: 0.5 });
+  const violationTotal =
+    defense.violations.findings + defense.violations.issues + defense.violations.threats;
+  const targetPorts: NonNullable<GuardrailGraphNode["ports"]> = [
+    { id: TARGET_PORTS.in, side: "left", offset: 0.5 },
+  ];
+  if (exclusionTotal > 0)
+    targetPorts.push({ id: TARGET_PORTS.exclusions, side: "bottom", offset: 0.5 });
   if (violationTotal > 0) {
-    targetPorts.push({ id: TARGET_PORTS.violations, side: "bottom", offset: VIOLATIONS_PORT_OFFSET });
+    targetPorts.push({
+      id: TARGET_PORTS.violations,
+      side: "bottom",
+      offset: VIOLATIONS_PORT_OFFSET,
+    });
   }
   nodes.push({
     id: NODE_ID.target,
@@ -196,7 +217,10 @@ export function toGuardrailGraph(defense: GuardrailDefense): GuardrailGraph {
       layout: { attach: { to: NODE_ID.target, side: "bottom", gap: 40, align: "center" } },
     });
     edges.push(
-      edge(NODE_ID.exclusions, NODE_ID.target, "sky", { targetPort: TARGET_PORTS.exclusions, markerEnd: "arrow" }),
+      edge(NODE_ID.exclusions, NODE_ID.target, "sky", {
+        targetPort: TARGET_PORTS.exclusions,
+        markerEnd: "arrow",
+      }),
     );
     const excluded = RESOURCES.filter((r) => defense.exclusions[r] > 0);
     excluded.forEach((resource, index) => {
@@ -208,7 +232,11 @@ export function toGuardrailGraph(defense: GuardrailDefense): GuardrailGraph {
         data: { resource, count, tone: "sky", label: `${resourceLabel(resource, count)} excluded` },
         layout: { attach: { to: NODE_ID.exclusions, side: "bottom", gap: 24, align } },
       });
-      edges.push(edge(NODE_ID.exclusions, NODE_ID.exclusion(resource), "sky", { bundle: BUNDLE.exclusionsOut }));
+      edges.push(
+        edge(NODE_ID.exclusions, NODE_ID.exclusion(resource), "sky", {
+          bundle: BUNDLE.exclusionsOut,
+        }),
+      );
     });
   }
 
@@ -221,13 +249,20 @@ export function toGuardrailGraph(defense: GuardrailDefense): GuardrailGraph {
       data: {
         title: "Violations:",
         tone: "red",
-        items: [violationLine(findings, "Findings"), violationLine(issues, "Issues"), violationLine(threats, "Threats")],
+        items: [
+          violationLine(findings, "Findings"),
+          violationLine(issues, "Issues"),
+          violationLine(threats, "Threats"),
+        ],
       },
       ports: [{ id: "in", side: "left", offset: 0.25 }],
       layout: { attach: { to: NODE_ID.target, side: "right", gap: 56, align: "end" } },
     });
     edges.push(
-      edge(NODE_ID.target, NODE_ID.violations, "red", { sourcePort: TARGET_PORTS.violations, targetPort: "in" }),
+      edge(NODE_ID.target, NODE_ID.violations, "red", {
+        sourcePort: TARGET_PORTS.violations,
+        targetPort: "in",
+      }),
     );
   }
 

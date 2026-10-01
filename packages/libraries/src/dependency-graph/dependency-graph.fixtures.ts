@@ -31,7 +31,9 @@ export const guardrailLikeFixture: { nodes: FixtureNode[]; edges: FixtureEdge[] 
     node("resource-users", "chip", "15 users", { layout: { order: 0 } }),
     node("resource-buckets", "chip", "2 buckets", { layout: { order: 1 } }),
     node("permissions", "pill", "Permissions"),
-    ...ACTIONS.map((label, order) => node(`action-${label.toLowerCase()}`, "pill", label, { layout: { order } })),
+    ...ACTIONS.map((label, order) =>
+      node(`action-${label.toLowerCase()}`, "pill", label, { layout: { order } }),
+    ),
     node("deny", "pill", "Deny"),
     node("target", "group", "Target", {
       ports: [

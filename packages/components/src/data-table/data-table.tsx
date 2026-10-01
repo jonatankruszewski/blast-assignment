@@ -47,10 +47,7 @@ export function DataTable<T>({
             </tr>
           ) : (
             rows.map((row) => (
-              <tr
-                key={getRowId(row)}
-                className={clsx(styles.row, onRowClick && styles.clickable)}
-              >
+              <tr key={getRowId(row)} className={clsx(styles.row, onRowClick && styles.clickable)}>
                 {columns.map((column, index) => (
                   <td key={column.key} className={styles.td}>
                     {onRowClick && index === 0 ? (

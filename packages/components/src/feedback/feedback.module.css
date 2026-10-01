@@ -7,9 +7,19 @@
   animation: spin 0.7s linear infinite;
   vertical-align: middle;
 }
-.sm { width: 14px; height: 14px; }
-.md { width: 20px; height: 20px; }
-.lg { width: 32px; height: 32px; border-width: 3px; }
+.sm {
+  width: 14px;
+  height: 14px;
+}
+.md {
+  width: 20px;
+  height: 20px;
+}
+.lg {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
 
 @keyframes spin {
   to {
@@ -28,13 +38,23 @@
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }
-.radius-sm { border-radius: var(--blast-radius-sm); }
-.radius-md { border-radius: var(--blast-radius-md); }
-.radius-full { border-radius: var(--blast-radius-full); }
+.radius-sm {
+  border-radius: var(--blast-radius-sm);
+}
+.radius-md {
+  border-radius: var(--blast-radius-md);
+}
+.radius-full {
+  border-radius: var(--blast-radius-full);
+}
 
 @keyframes shimmer {
-  from { background-position: 100% 0; }
-  to { background-position: -100% 0; }
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

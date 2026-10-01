@@ -67,7 +67,11 @@ function LoadedDrawer({ guardrail }: { guardrail: Guardrail }) {
   const copyLink = useCopyLink();
 
   const copyLabel =
-    copyLink.status === "copied" ? "Link copied" : copyLink.status === "error" ? "Could not copy link" : "Copy link";
+    copyLink.status === "copied"
+      ? "Link copied"
+      : copyLink.status === "error"
+        ? "Could not copy link"
+        : "Copy link";
 
   return (
     <>

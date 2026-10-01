@@ -1,8 +1,18 @@
 import { describe, expect, it } from "vitest";
 import type { GuardrailDefense } from "../domain/guardrail.types.js";
-import { defenseFixture, guardrailsFixture, SCREENSHOT_GUARDRAIL_ID } from "../mocks/guardrails.fixtures.js";
+import {
+  defenseFixture,
+  guardrailsFixture,
+  SCREENSHOT_GUARDRAIL_ID,
+} from "../mocks/guardrails.fixtures.js";
 import { TARGET_PORTS, type GuardrailGraph } from "./guardrail-graph.types.js";
-import { BUNDLE, NODE_ID, RANK, toGuardrailGraph, VIOLATIONS_PORT_OFFSET } from "./to-guardrail-graph.js";
+import {
+  BUNDLE,
+  NODE_ID,
+  RANK,
+  toGuardrailGraph,
+  VIOLATIONS_PORT_OFFSET,
+} from "./to-guardrail-graph.js";
 
 const screenshotGuardrail = guardrailsFixture.find((g) => g.id === SCREENSHOT_GUARDRAIL_ID);
 if (!screenshotGuardrail) throw new Error("fixture missing");
@@ -115,7 +125,9 @@ describe("toGuardrailGraph — screenshot guardrail", () => {
   });
 
   it("points deny and the SCP into the target's left port with arrows", () => {
-    const into = graph.edges.filter((e) => e.target === "target" && e.targetPort === TARGET_PORTS.in);
+    const into = graph.edges.filter(
+      (e) => e.target === "target" && e.targetPort === TARGET_PORTS.in,
+    );
     expect(into.map((e) => [e.source, e.type, e.markerEnd, e.bundle])).toEqual([
       ["effect-deny", "red", "arrow", BUNDLE.targetIn],
       ["policy", "indigo", "arrow", BUNDLE.targetIn],
@@ -129,12 +141,19 @@ describe("toGuardrailGraph — screenshot guardrail", () => {
   });
 
   it("attaches the SCP above the target aligned to its start", () => {
-    expect(node(graph, "policy").layout?.attach).toMatchObject({ to: "target", side: "top", align: "start" });
+    expect(node(graph, "policy").layout?.attach).toMatchObject({
+      to: "target",
+      side: "top",
+      align: "start",
+    });
     expect(node(graph, "policy").data).toEqual({ label: "Service control policy", tone: "indigo" });
   });
 
   it("attaches exclusions below the target and its two chips below exclusions", () => {
-    expect(node(graph, "exclusions").layout?.attach).toMatchObject({ to: "target", side: "bottom" });
+    expect(node(graph, "exclusions").layout?.attach).toMatchObject({
+      to: "target",
+      side: "bottom",
+    });
     expect(node(graph, "exclusion-identities").layout?.attach).toMatchObject({
       to: "exclusions",
       side: "bottom",
@@ -149,9 +168,9 @@ describe("toGuardrailGraph — screenshot guardrail", () => {
     expect(node(graph, "exclusion-buckets").data).toMatchObject({ count: 1, tone: "sky" });
     const exclusionEdges = graph.edges.filter((e) => e.source === "exclusions");
     expect(exclusionEdges.every((e) => e.type === "sky")).toBe(true);
-    expect(graph.edges.find((e) => e.target === "target" && e.source === "exclusions")?.targetPort).toBe(
-      TARGET_PORTS.exclusions,
-    );
+    expect(
+      graph.edges.find((e) => e.target === "target" && e.source === "exclusions")?.targetPort,
+    ).toBe(TARGET_PORTS.exclusions);
   });
 
   it("connects violations from the target's bottom-right port", () => {
@@ -201,14 +220,18 @@ describe("toGuardrailGraph — data variations", () => {
   });
 
   it("drops zero-count resource chips and moves the caption to the remaining chip", () => {
-    const graph = toGuardrailGraph(withDefense({ affectedResources: { identities: 0, buckets: 3 } }));
+    const graph = toGuardrailGraph(
+      withDefense({ affectedResources: { identities: 0, buckets: 3 } }),
+    );
     expect(ids(graph)).not.toContain("resource-identities");
     expect(node(graph, "resource-buckets").layout?.order).toBe(0);
     expect(node(graph, "caption").layout?.attach?.to).toBe("resource-buckets");
   });
 
   it("drops the caption when there are no affected resources", () => {
-    const graph = toGuardrailGraph(withDefense({ affectedResources: { identities: 0, buckets: 0 } }));
+    const graph = toGuardrailGraph(
+      withDefense({ affectedResources: { identities: 0, buckets: 0 } }),
+    );
     expect(ids(graph)).not.toContain("caption");
     expect(graph.edges.some((e) => e.bundle === BUNDLE.permissionsIn)).toBe(false);
   });
@@ -226,9 +249,14 @@ describe("toGuardrailGraph — data variations", () => {
   });
 
   it("drops violations and their port when there are none", () => {
-    const graph = toGuardrailGraph(withDefense({ violations: { findings: 0, issues: 0, threats: 0 } }));
+    const graph = toGuardrailGraph(
+      withDefense({ violations: { findings: 0, issues: 0, threats: 0 } }),
+    );
     expect(ids(graph)).not.toContain("violations");
-    expect(node(graph, "target").ports?.map((p) => p.id)).toEqual([TARGET_PORTS.in, TARGET_PORTS.exclusions]);
+    expect(node(graph, "target").ports?.map((p) => p.id)).toEqual([
+      TARGET_PORTS.in,
+      TARGET_PORTS.exclusions,
+    ]);
   });
 
   it("does not filter by layers (layers are UI-only for now)", () => {
@@ -240,7 +268,10 @@ describe("toGuardrailGraph — data variations", () => {
     for (const guardrail of guardrailsFixture) {
       const graph = toGuardrailGraph(defenseFixture(guardrail));
       const known = new Set(ids(graph));
-      expect(graph.edges.every((e) => known.has(e.source) && known.has(e.target)), guardrail.id).toBe(true);
+      expect(
+        graph.edges.every((e) => known.has(e.source) && known.has(e.target)),
+        guardrail.id,
+      ).toBe(true);
     }
   });
 });

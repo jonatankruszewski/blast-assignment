@@ -18,7 +18,12 @@ export function IconButton({
       {...rest}
       type={type}
       aria-label={label}
-      className={clsx(styles.button, size === "sm" && styles.sm, onDark && styles.onDark, className)}
+      className={clsx(
+        styles.button,
+        size === "sm" && styles.sm,
+        onDark && styles.onDark,
+        className,
+      )}
     >
       <span aria-hidden="true" className={styles.glyph}>
         {icon}

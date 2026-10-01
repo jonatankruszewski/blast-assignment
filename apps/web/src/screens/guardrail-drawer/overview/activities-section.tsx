@@ -1,4 +1,11 @@
-import { EmptyState, ErrorState, LineChart, MenuSelect, Section, Skeleton } from "@blast/components";
+import {
+  EmptyState,
+  ErrorState,
+  LineChart,
+  MenuSelect,
+  Section,
+  Skeleton,
+} from "@blast/components";
 import type { LineChartSeries } from "@blast/components";
 import type { ActivityRange } from "../../../domain/guardrail.types.js";
 import { useActivities } from "../../../hooks/use-activities.js";
@@ -16,7 +23,11 @@ const SERIES: LineChartSeries[] = [
   { key: "excluded", label: "Excluded", tone: "indigo" },
 ];
 
-const tickFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+const tickFormat = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
 
 /** "2026-09-15" → "SEP. 15" as in the design. */
 export function formatTickDate(iso: string): string {

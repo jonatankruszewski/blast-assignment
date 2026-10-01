@@ -55,7 +55,9 @@ export function GuardrailMetadata({ guardrail }: { guardrail: Guardrail }) {
         </ExternalLink>
       </MetadataItem>
       <MetadataItem label="Containing policy">
-        <ExternalLink href={guardrail.containingPolicy.url}>{guardrail.containingPolicy.id}</ExternalLink>
+        <ExternalLink href={guardrail.containingPolicy.url}>
+          {guardrail.containingPolicy.id}
+        </ExternalLink>
       </MetadataItem>
     </MetadataPanel>
   );

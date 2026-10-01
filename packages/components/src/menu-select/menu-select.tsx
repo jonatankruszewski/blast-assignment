@@ -55,10 +55,8 @@ export function MenuSelect({
   useEffect(() => {
     if (!open) return;
     listRef.current
-      ?.querySelector(`#${CSS.escape(optionId(activeIndex))}`)
-      ?.scrollIntoView?.({ block: "nearest" });
-    // optionId is derived from a stable id
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      ?.querySelector(`[data-index="${String(activeIndex)}"]`)
+      ?.scrollIntoView({ block: "nearest" });
   }, [open, activeIndex]);
 
   const openMenu = (index = Math.max(selectedIndex, 0)) => {
@@ -82,7 +80,9 @@ export function MenuSelect({
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       openMenu(
-        event.key === "ArrowUp" && selectedIndex < 0 ? options.length - 1 : Math.max(selectedIndex, 0),
+        event.key === "ArrowUp" && selectedIndex < 0
+          ? options.length - 1
+          : Math.max(selectedIndex, 0),
       );
     }
   };
@@ -138,10 +138,7 @@ export function MenuSelect({
   const text = label ? `${label}: ${shownLabel ?? placeholder ?? ""}`.trim() : shownLabel;
 
   return (
-    <div
-      ref={rootRef}
-      className={clsx(styles.root, variant !== "ghost" && styles.fieldRoot)}
-    >
+    <div ref={rootRef} className={clsx(styles.root, variant !== "ghost" && styles.fieldRoot)}>
       <button
         ref={triggerRef}
         type="button"

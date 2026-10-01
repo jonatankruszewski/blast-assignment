@@ -38,4 +38,8 @@ export interface GuardrailGraph {
   edges: GuardrailGraphEdge[];
 }
 
-export const TARGET_PORTS = { in: "in", exclusions: "exclusions", violations: "violations" } as const;
+export const TARGET_PORTS = {
+  in: "in",
+  exclusions: "exclusions",
+  violations: "violations",
+} as const;

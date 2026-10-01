@@ -21,7 +21,11 @@ import {
 import type { NodeRenderProps } from "@blast/libraries";
 import type { ComponentType, ReactNode } from "react";
 import type { ActionEffect, ActionKind } from "../domain/guardrail.types.js";
-import type { CountedResource, GuardrailGraphNode, GuardrailNodeType } from "./guardrail-graph.types.js";
+import type {
+  CountedResource,
+  GuardrailGraphNode,
+  GuardrailNodeType,
+} from "./guardrail-graph.types.js";
 
 type Props = NodeRenderProps<GuardrailGraphNode>;
 
@@ -62,19 +66,41 @@ function PermissionHubNode({ node, selected }: Props) {
 function ActionNode({ node, selected }: Props) {
   if (node.type !== "action") return null;
   const { tone, label, kind } = node.data;
-  return <GraphPill tone={tone} variant="soft" icon={ACTION_ICONS[kind]} label={label} selected={selected} />;
+  return (
+    <GraphPill
+      tone={tone}
+      variant="soft"
+      icon={ACTION_ICONS[kind]}
+      label={label}
+      selected={selected}
+    />
+  );
 }
 
 function EffectNode({ node, selected }: Props) {
   if (node.type !== "effect") return null;
   const { tone, label, effect } = node.data;
-  return <GraphPill tone={tone} variant="outline" icon={EFFECT_ICONS[effect]} label={label} selected={selected} />;
+  return (
+    <GraphPill
+      tone={tone}
+      variant="outline"
+      icon={EFFECT_ICONS[effect]}
+      label={label}
+      selected={selected}
+    />
+  );
 }
 
 function PolicyNode({ node, selected }: Props) {
   if (node.type !== "policy") return null;
   return (
-    <GraphPill tone={node.data.tone} variant="solid" icon={<FolderLock />} label={node.data.label} selected={selected} />
+    <GraphPill
+      tone={node.data.tone}
+      variant="solid"
+      icon={<FolderLock />}
+      label={node.data.label}
+      selected={selected}
+    />
   );
 }
 
@@ -99,7 +125,15 @@ function ServiceNode({ node, selected }: Props) {
 
 function ExclusionsNode({ node, selected }: Props) {
   if (node.type !== "exclusions") return null;
-  return <GraphPill tone={node.data.tone} variant="soft" icon={<LockOpen />} label={node.data.label} selected={selected} />;
+  return (
+    <GraphPill
+      tone={node.data.tone}
+      variant="soft"
+      icon={<LockOpen />}
+      label={node.data.label}
+      selected={selected}
+    />
+  );
 }
 
 function ViolationsNode({ node }: Props) {

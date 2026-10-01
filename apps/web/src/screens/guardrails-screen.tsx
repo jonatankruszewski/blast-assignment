@@ -1,5 +1,6 @@
 import { AppShell, Drawer, TopNav } from "@blast/components";
 import { useState } from "react";
+import { DevNav } from "../app/dev-views.js";
 import { useDrawerRoute } from "../hooks/use-drawer-route.js";
 import { currentUser, projectsFixture } from "../mocks/projects.fixtures.js";
 import { GuardrailDrawerContent } from "./guardrail-drawer/guardrail-drawer.js";
@@ -18,12 +19,15 @@ export function GuardrailsScreen() {
           onProjectChange={setProject}
           userInitials={currentUser.initials}
           userName={currentUser.name}
+          {...(import.meta.env.DEV ? { actions: <DevNav /> } : {})}
         />
       }
     >
       <GuardrailsTable />
       <Drawer open={route.guardrailId !== null} onClose={close} ariaLabel="Guardrail details">
-        {route.guardrailId && <GuardrailDrawerContent key={route.guardrailId} guardrailId={route.guardrailId} />}
+        {route.guardrailId && (
+          <GuardrailDrawerContent key={route.guardrailId} guardrailId={route.guardrailId} />
+        )}
       </Drawer>
     </AppShell>
   );

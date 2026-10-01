@@ -34,13 +34,17 @@ function oneOf<T extends string>(list: readonly T[], value: string | null, fallb
   return list.find((item) => item === value) ?? fallback;
 }
 
+function nonEmpty(value: string | null): string | null {
+  return value === "" ? null : value;
+}
+
 export function parseDrawerRoute(search: string): DrawerRoute {
   const params = new URLSearchParams(search);
   return {
-    guardrailId: params.get(PARAM.guardrail) || null,
+    guardrailId: nonEmpty(params.get(PARAM.guardrail)),
     tab: oneOf(GUARDRAIL_TABS, params.get(PARAM.tab), DEFAULTS.tab),
     layers: oneOf(LAYERS, params.get(PARAM.layers), DEFAULTS.layers),
-    cloudUnit: params.get(PARAM.cloudUnit) || null,
+    cloudUnit: nonEmpty(params.get(PARAM.cloudUnit)),
     range: oneOf(RANGES, params.get(PARAM.range), DEFAULTS.range),
   };
 }
@@ -97,7 +101,10 @@ export function useDrawerRoute() {
       navigate({ guardrailId, tab }, "push");
     },
     close: () => {
-      navigate({ guardrailId: null, tab: "overview", layers: "all", cloudUnit: null, range: "30d" }, "push");
+      navigate(
+        { guardrailId: null, tab: "overview", layers: "all", cloudUnit: null, range: "30d" },
+        "push",
+      );
     },
     setTab: (tab: GuardrailTab) => {
       navigate({ tab }, "push");

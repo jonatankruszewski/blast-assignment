@@ -8,7 +8,11 @@ export function guardrailDecorations(node: GuardrailGraphNode): readonly Decorat
   const decorations: Decoration[] = [];
   if (node.data.locked) decorations.push({ id: "lock", anchor: "top", content: <LockBadge /> });
   if (node.ports?.some((p) => p.id === TARGET_PORTS.violations)) {
-    decorations.push({ id: "violations-port", anchor: "bottom-right", content: <PortDot tone="red" /> });
+    decorations.push({
+      id: "violations-port",
+      anchor: "bottom-right",
+      content: <PortDot tone="red" />,
+    });
   }
   return decorations;
 }

@@ -2,7 +2,12 @@ import { clsx } from "clsx";
 import styles from "./icon-stack.module.css";
 import type { IconStackProps } from "./icon-stack.types.js";
 
-export function IconStack({ items, shape = "circle", variant = "solid", ariaLabel }: IconStackProps) {
+export function IconStack({
+  items,
+  shape = "circle",
+  variant = "solid",
+  ariaLabel,
+}: IconStackProps) {
   return (
     <ul className={styles.list} aria-label={ariaLabel}>
       {items.map((item) => (
