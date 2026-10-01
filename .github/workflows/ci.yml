@@ -29,6 +29,9 @@ jobs:
     needs: [commitlint]
     if: needs.commitlint.outputs.code-changed == 'true'
     uses: rxova/shared/.github/workflows/repo-checks.yml@main
+    with:
+      # No docs site in this repo, so the default `--filter='!docs'` matches nothing.
+      build-command: pnpm exec turbo run build
 
   test:
     name: unit
@@ -44,25 +47,11 @@ jobs:
     if: needs.commitlint.outputs.code-changed == 'true'
     uses: rxova/shared/.github/workflows/supply-chain.yml@main
 
-  pack-smoke:
-    name: package contract
-    needs: [commitlint]
-    if: needs.commitlint.outputs.code-changed == 'true'
-    uses: rxova/shared/.github/workflows/package-contract.yml@main
-
   compat:
     name: packages on their oldest node
     needs: [commitlint]
     if: needs.commitlint.outputs.code-changed == 'true'
     uses: rxova/shared/.github/workflows/node-floor-smoke.yml@main
-
-  docs:
-    name: docs build
-    needs: [commitlint]
-    if: >-
-      needs.commitlint.outputs.code-changed == 'true' ||
-      needs.commitlint.outputs.docs-changed == 'true'
-    uses: rxova/shared/.github/workflows/docs-build.yml@main
 
   docs-checks:
     name: docs checks
@@ -77,13 +66,15 @@ jobs:
     needs: [commitlint]
     uses: rxova/shared/.github/workflows/changeset-gate.yml@main
 
+  # No package contract or docs build jobs: every package is private and
+  # source-only (nothing is published), and there is no docs site.
+
   # The one context branch protection requires. `skipped` passes; `failure`
   # and `cancelled` do not.
   gate:
     name: all checks
     if: always()
-    needs:
-      [commitlint, checks, test, supply-chain, pack-smoke, compat, docs, docs-checks, changeset]
+    needs: [commitlint, checks, test, supply-chain, compat, docs-checks, changeset]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
