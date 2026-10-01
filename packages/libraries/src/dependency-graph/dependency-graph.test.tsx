@@ -101,6 +101,48 @@ describe("DependencyGraph", () => {
     expect(onNodeActivate).toHaveBeenCalledWith(expect.objectContaining({ id: "build" }));
   });
 
+  it("uses a roving tabindex and moves focus spatially with arrow keys", async () => {
+    renderPipeline({ getNodeLabel: (node) => `${node.data.label} step` });
+    const source = await screen.findByRole("button", { name: "Source step" });
+    expect(source).toHaveAttribute("tabindex", "0");
+    expect(screen.getByRole("button", { name: "Build step" })).toHaveAttribute("tabindex", "-1");
+    // inert nodes are not buttons
+    expect(screen.queryByRole("button", { name: "manual approval step" })).toBeNull();
+
+    await userEvent.tab();
+    expect(source).toHaveFocus();
+    await userEvent.keyboard("{ArrowRight}");
+    const lint = screen.getByRole("button", { name: "Lint step" });
+    expect(lint).toHaveFocus();
+    expect(lint).toHaveAttribute("tabindex", "0");
+    expect(source).toHaveAttribute("tabindex", "-1");
+    await userEvent.keyboard("{ArrowDown}");
+    expect(screen.getByRole("button", { name: "Test step" })).toHaveFocus();
+    await userEvent.keyboard("{End}");
+    expect(screen.getByRole("button", { name: "Deploy step" })).toHaveFocus();
+    await userEvent.keyboard("{Home}");
+    expect(source).toHaveFocus();
+  });
+
+  it("selects with Space and clears with Escape", async () => {
+    const onSelect = vi.fn();
+    renderPipeline({ onSelect, getNodeLabel: (node) => node.data.label });
+    const deploy = await screen.findByRole("button", { name: "Deploy" });
+    expect(deploy).toHaveAttribute("aria-pressed", "false");
+    deploy.focus();
+    await userEvent.keyboard(" ");
+    expect(onSelect).toHaveBeenLastCalledWith("deploy");
+    await userEvent.keyboard("{Escape}");
+    expect(onSelect).toHaveBeenLastCalledWith(null);
+  });
+
+  it("activates a node on click", async () => {
+    const onNodeActivate = vi.fn();
+    renderPipeline({ onNodeActivate, getNodeLabel: (node) => node.data.label });
+    await userEvent.click(await screen.findByRole("button", { name: "Lint" }));
+    expect(onNodeActivate).toHaveBeenCalledWith(expect.objectContaining({ id: "lint" }));
+  });
+
   it("does not activate inert nodes", async () => {
     const onNodeActivate = vi.fn();
     renderPipeline({ onNodeActivate });

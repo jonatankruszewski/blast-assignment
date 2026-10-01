@@ -1,4 +1,11 @@
 import "@testing-library/jest-dom/vitest";
+import { cleanup } from "@testing-library/react";
+import { afterEach } from "vitest";
+
+// Vitest runs without globals, so Testing Library cannot register its own cleanup.
+afterEach(() => {
+  cleanup();
+});
 
 /**
  * jsdom has no layout. Elements report a fixed 100×40 size (or `data-test-size="WxH"` on the

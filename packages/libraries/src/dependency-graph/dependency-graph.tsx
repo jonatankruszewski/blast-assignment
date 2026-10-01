@@ -16,8 +16,9 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
-import { anchorPoint } from "../geometry/geometry.js";
-import { layeredLayout } from "../layout/layout.js";
+import { anchorPoint, portPoint } from "../geometry/geometry.js";
+import { KEY_DIRECTIONS, nextInDirection, readingOrder } from "../keyboard-nav/keyboard-nav.js";
+import { getGroupIds, layeredLayout } from "../layout/layout.js";
 import { routeEdges } from "../routing/routing.js";
 import type {
   DependencyGraphProps,
@@ -34,10 +35,17 @@ const DEFAULT_PADDING = 24;
 const EDGES_NODE_ID = "__dg_edges__";
 
 interface GraphContextValue {
-  props: DependencyGraphProps<GraphNode, GraphEdge>;
+  config: DependencyGraphProps;
   layout: LayoutResult;
   routed: readonly RoutedEdge[];
   groupIds: ReadonlySet<NodeId>;
+  /** Roving tabindex holder. */
+  activeId: NodeId | undefined;
+  /** Node that currently has DOM focus. */
+  focusedId: NodeId | undefined;
+  setFocusedId: (id: NodeId | undefined) => void;
+  registerNode: (id: NodeId, el: HTMLElement | null) => void;
+  moveFocus: (from: NodeId, key: string) => boolean;
 }
 
 const GraphContext = createContext<GraphContextValue | null>(null);
@@ -77,7 +85,15 @@ function EdgeMarkers({ edge }: { edge: GraphEdge }) {
           <path d="M0,1 L9,5 L0,9 z" fill="context-stroke" />
         </marker>
       ) : (
-        <marker key={id} id={id} viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7">
+        <marker
+          key={id}
+          id={id}
+          viewBox="0 0 10 10"
+          refX="5"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+        >
           <circle cx="5" cy="5" r="4" fill="context-stroke" />
         </marker>
       ),
@@ -88,9 +104,9 @@ function EdgeMarkers({ edge }: { edge: GraphEdge }) {
 
 /** Every edge in one SVG, hosted by a non-interactive node that spans the layout bounds. */
 function EdgesLayer() {
-  const { props, layout, routed } = useGraph();
+  const { config, layout, routed } = useGraph();
   const { bounds } = layout;
-  const EdgeRenderer = props.edgeRenderer;
+  const EdgeRenderer = config.edgeRenderer;
   return (
     <svg
       width={bounds.width}
@@ -117,9 +133,13 @@ function EdgesLayer() {
             fill="none"
             stroke="currentColor"
             strokeWidth={1}
-            markerStart={start && start !== "none" ? `url(#${markerId(start, r.edge.id, "start")})` : undefined}
-            markerEnd={end && end !== "none" ? `url(#${markerId(end, r.edge.id, "end")})` : undefined}
-            {...props.getEdgeProps?.(r.edge)}
+            markerStart={
+              start && start !== "none" ? `url(#${markerId(start, r.edge.id, "start")})` : undefined
+            }
+            markerEnd={
+              end && end !== "none" ? `url(#${markerId(end, r.edge.id, "end")})` : undefined
+            }
+            {...config.getEdgeProps?.(r.edge)}
           />
         );
       })}
@@ -128,39 +148,41 @@ function EdgesLayer() {
 }
 
 function GraphNodeView({ data, selected }: FlowNodeProps<FlowNode<NodeData>>) {
-  const { props, layout, groupIds } = useGraph();
+  const { config, layout, groupIds, activeId, focusedId, setFocusedId, registerNode, moveFocus } =
+    useGraph();
   const node = data.graphNode;
-  const Renderer = props.nodeRenderers[node.type];
+  const Renderer = config.nodeRenderers[node.type];
   const size: Size = layout.sizes[node.id] ?? { width: 0, height: 0 };
-  const decorations = props.renderDecorations?.(node) ?? [];
+  const decorations = config.renderDecorations?.(node) ?? [];
   const activatable = node.inert !== true;
+  const frame = { x: 0, y: 0, ...size };
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (!activatable) return;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      props.onSelect?.(node.id);
-      props.onNodeActivate?.(node);
+      config.onSelect?.(node.id);
+      config.onNodeActivate?.(node);
+    } else if (event.key === "Escape") {
+      config.onSelect?.(null);
+    } else if (moveFocus(node.id, event.key)) {
+      event.preventDefault();
     }
   };
 
-  return (
-    <div
-      data-node-id={node.id}
-      style={{ position: "relative", width: size.width, height: size.height }}
-      onKeyDown={onKeyDown}
-    >
+  const content = (
+    <>
       {Renderer ? (
         <Renderer
           node={node}
           selected={selected}
-          focused={false}
+          focused={focusedId === node.id}
           size={size}
           isGroup={groupIds.has(node.id)}
         />
       ) : null}
       {decorations.map((d) => {
-        const p = anchorPoint({ x: 0, y: 0, ...size }, d.anchor);
+        const port = d.port === undefined ? undefined : node.ports?.find((p) => p.id === d.port);
+        const p = port === undefined ? anchorPoint(frame, d.anchor) : portPoint(frame, port);
         return (
           <div
             key={d.id}
@@ -176,6 +198,37 @@ function GraphNodeView({ data, selected }: FlowNodeProps<FlowNode<NodeData>>) {
           </div>
         );
       })}
+    </>
+  );
+  const style = { position: "relative", width: size.width, height: size.height } as const;
+
+  if (!activatable) {
+    return (
+      <div data-node-id={node.id} style={style}>
+        {content}
+      </div>
+    );
+  }
+  return (
+    <div
+      ref={(el) => {
+        registerNode(node.id, el);
+      }}
+      data-node-id={node.id}
+      role="button"
+      tabIndex={activeId === node.id ? 0 : -1}
+      aria-label={config.getNodeLabel?.(node)}
+      aria-pressed={config.onSelect === undefined ? undefined : selected}
+      style={style}
+      onKeyDown={onKeyDown}
+      onFocus={() => {
+        setFocusedId(node.id);
+      }}
+      onBlur={() => {
+        setFocusedId(undefined);
+      }}
+    >
+      {content}
     </div>
   );
 }
@@ -184,11 +237,11 @@ const nodeTypes = { dg: GraphNodeView, dgEdges: EdgesLayer };
 
 /** Renders every node once off-screen at its natural size and reports the measurements. */
 function MeasureLayer({
-  props,
+  graph,
   groupIds,
   onMeasure,
 }: {
-  props: DependencyGraphProps<GraphNode, GraphEdge>;
+  graph: DependencyGraphProps;
   groupIds: ReadonlySet<NodeId>;
   onMeasure: (sizes: Record<NodeId, Size>) => void;
 }) {
@@ -214,19 +267,29 @@ function MeasureLayer({
     return () => {
       observer.disconnect();
     };
-  }, [props.nodes, onMeasure]);
+  }, [graph.nodes, onMeasure]);
 
   return (
     <div
       ref={ref}
       aria-hidden="true"
-      style={{ position: "absolute", left: -10000, top: 0, visibility: "hidden", pointerEvents: "none" }}
+      style={{
+        position: "absolute",
+        left: -10000,
+        top: 0,
+        visibility: "hidden",
+        pointerEvents: "none",
+      }}
     >
-      {props.nodes.map((node) => {
+      {graph.nodes.map((node) => {
         if (groupIds.has(node.id)) return null;
-        const Renderer = props.nodeRenderers[node.type];
+        const Renderer = graph.nodeRenderers[node.type];
         return (
-          <div key={node.id} data-measure-id={node.id} style={{ display: "inline-block", position: "absolute" }}>
+          <div
+            key={node.id}
+            data-measure-id={node.id}
+            style={{ display: "inline-block", position: "absolute" }}
+          >
             {Renderer ? (
               <Renderer
                 node={node}
@@ -250,30 +313,25 @@ function sameSizes(a: Record<NodeId, Size>, b: Record<NodeId, Size>): boolean {
 }
 
 function GraphInner<N extends GraphNode, E extends GraphEdge>(props: DependencyGraphProps<N, E>) {
-  const anyProps = props as unknown as DependencyGraphProps<GraphNode, GraphEdge>;
-  const groupIds = useMemo(
-    () => new Set(props.nodes.flatMap((n) => (n.parentId === undefined ? [] : [n.parentId]))),
-    [props.nodes],
-  );
+  const anyProps = props as unknown as DependencyGraphProps;
+  const groupIds = useMemo(() => getGroupIds(props.nodes), [props.nodes]);
   const [measured, setMeasured] = useState<Record<NodeId, Size>>({});
-  const [onMeasure] = useState(
-    () => (sizes: Record<NodeId, Size>) => {
-      setMeasured((prev) => (sameSizes(prev, sizes) ? prev : sizes));
-    },
-  );
+  const [onMeasure] = useState(() => (sizes: Record<NodeId, Size>) => {
+    setMeasured((prev) => (sameSizes(prev, sizes) ? prev : sizes));
+  });
 
   const ready = props.nodes.every((n) => groupIds.has(n.id) || measured[n.id] !== undefined);
 
+  const rankSpacing = props.spacing?.rank;
+  const nodeSpacing = props.spacing?.node;
   const computed = useMemo(() => {
     if (!ready || props.nodes.length === 0) return null;
-    const engine =
-      props.layout ??
-      layeredLayout({
-        ...(props.spacing?.rank === undefined ? {} : { rankSpacing: props.spacing.rank }),
-        ...(props.spacing?.node === undefined ? {} : { nodeSpacing: props.spacing.node }),
-      });
+    const engine = props.layout ?? layeredLayout({ rankSpacing, nodeSpacing });
     const layout = engine({
-      nodes: props.nodes.map((node) => ({ node, size: measured[node.id] ?? { width: 0, height: 0 } })),
+      nodes: props.nodes.map((node) => ({
+        node,
+        size: measured[node.id] ?? { width: 0, height: 0 },
+      })),
       edges: props.edges,
     });
     const routed = routeEdges(
@@ -281,7 +339,63 @@ function GraphInner<N extends GraphNode, E extends GraphEdge>(props: DependencyG
       { routing: props.routing ?? "orthogonal" },
     );
     return { layout, routed };
-  }, [ready, measured, props.nodes, props.edges, props.layout, props.routing, props.spacing?.rank, props.spacing?.node]);
+  }, [
+    ready,
+    measured,
+    props.nodes,
+    props.edges,
+    props.layout,
+    props.routing,
+    rankSpacing,
+    nodeSpacing,
+  ]);
+
+  // Keyboard: roving tabindex over non-inert nodes, arrow keys move spatially.
+  const [activeIdState, setActiveId] = useState<NodeId | undefined>(undefined);
+  const [focusedId, setFocusedIdState] = useState<NodeId | undefined>(undefined);
+  const nodeEls = useRef(new Map<NodeId, HTMLElement>());
+  const nav = useMemo(() => {
+    if (!computed) return { items: [], order: [] };
+    const items = props.nodes
+      .filter((n) => n.inert !== true)
+      .map((n) => ({
+        id: n.id,
+        rect: {
+          ...(computed.layout.positions[n.id] ?? { x: 0, y: 0 }),
+          ...(computed.layout.sizes[n.id] ?? { width: 0, height: 0 }),
+        },
+      }));
+    return { items, order: readingOrder(items) };
+  }, [computed, props.nodes]);
+  const isNavigable = (id: NodeId | null | undefined): id is NodeId =>
+    id !== null && id !== undefined && nav.order.includes(id);
+  const activeId = isNavigable(activeIdState)
+    ? activeIdState
+    : isNavigable(props.selectedId)
+      ? props.selectedId
+      : nav.order[0];
+
+  const setFocusedId = (id: NodeId | undefined) => {
+    setFocusedIdState(id);
+    if (id !== undefined) setActiveId(id);
+  };
+  const registerNode = (id: NodeId, el: HTMLElement | null) => {
+    if (el === null) nodeEls.current.delete(id);
+    else nodeEls.current.set(id, el);
+  };
+  const moveFocus = (from: NodeId, key: string): boolean => {
+    const direction = KEY_DIRECTIONS[key];
+    let next: NodeId | undefined;
+    if (direction !== undefined) next = nextInDirection(nav.items, from, direction);
+    else if (key === "Home") next = nav.order[0];
+    else if (key === "End") next = nav.order[nav.order.length - 1];
+    else return false;
+    if (next !== undefined) {
+      setActiveId(next);
+      nodeEls.current.get(next)?.focus();
+    }
+    return true;
+  };
 
   const flowNodes = useMemo<FlowNode[]>(() => {
     if (!computed) return [];
@@ -310,10 +424,11 @@ function GraphInner<N extends GraphNode, E extends GraphEdge>(props: DependencyG
         draggable: false,
         connectable: false,
         selectable: node.inert !== true,
-        focusable: node.inert !== true,
+        // Focus lives on the node's own role="button" element (roving tabindex), not xyflow's wrapper.
+        focusable: false,
         selected: props.selectedId === node.id,
         zIndex: isGroup ? 0 : 2,
-      } as unknown as FlowNode);
+      });
     }
     return nodes;
   }, [computed, props.nodes, props.selectedId, groupIds]);
@@ -342,13 +457,27 @@ function GraphInner<N extends GraphNode, E extends GraphEdge>(props: DependencyG
   return (
     <div role="group" aria-label={props.ariaLabel} className={props.className} style={style}>
       {props.background ? (
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>{props.background}</div>
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          {props.background}
+        </div>
       ) : null}
-      <MeasureLayer props={anyProps} groupIds={groupIds} onMeasure={onMeasure} />
+      <MeasureLayer graph={anyProps} groupIds={groupIds} onMeasure={onMeasure} />
       {computed ? (
-        <GraphContext.Provider value={{ props: anyProps, layout: computed.layout, routed: computed.routed, groupIds }}>
+        <GraphContext.Provider
+          value={{
+            config: anyProps,
+            layout: computed.layout,
+            routed: computed.routed,
+            groupIds,
+            activeId,
+            focusedId,
+            setFocusedId,
+            registerNode,
+            moveFocus,
+          }}
+        >
           <ReactFlow
-            key={computed.layout.bounds.width + "x" + computed.layout.bounds.height}
+            key={`${String(computed.layout.bounds.width)}x${String(computed.layout.bounds.height)}`}
             nodes={flowNodes}
             edges={[]}
             nodeTypes={nodeTypes}
@@ -359,6 +488,10 @@ function GraphInner<N extends GraphNode, E extends GraphEdge>(props: DependencyG
             nodesDraggable={false}
             nodesConnectable={false}
             elementsSelectable
+            deleteKeyCode={null}
+            selectionKeyCode={null}
+            multiSelectionKeyCode={null}
+            panActivationKeyCode={null}
             panOnDrag={props.viewport?.pan ?? false}
             zoomOnScroll={zoom !== undefined && zoom !== false}
             zoomOnPinch={zoom !== undefined && zoom !== false}
@@ -381,7 +514,9 @@ function GraphInner<N extends GraphNode, E extends GraphEdge>(props: DependencyG
   );
 }
 
-export function DependencyGraph<N extends GraphNode, E extends GraphEdge>(props: DependencyGraphProps<N, E>) {
+export function DependencyGraph<N extends GraphNode, E extends GraphEdge>(
+  props: DependencyGraphProps<N, E>,
+) {
   return (
     <ReactFlowProvider>
       <GraphInner {...props} />
